@@ -1,16 +1,80 @@
-# quiz
+# 🌍 World Explorer
 
-A new Flutter project.
+World Explorer is a Flutter mobile application focused on **visual geography learning** and **world exploration** using a **level-based quiz system**, with plans to expand into a global places discovery experience.
 
-## Getting Started
+---
 
-This project is a starting point for a Flutter application.
+## 📱 App Overview
 
-A few resources to get you started if this is your first Flutter project:
+The app contains a main menu with the following sections:
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+- **Start** – country guessing game (levels)
+- **The World** – future world exploration section
+- **Options**
+- **Exit**
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+---
+
+## 🎮 Start — Quiz Mode (current)
+
+This is the main implemented feature.
+
+### Level System
+- Levels are displayed in a **grid layout** (Level 1, Level 2, Level 3, etc.).
+- Each level represents **one country**.
+- Levels are selectable through the **Start** menu.
+
+### Gameplay Logic
+- A level presents **multiple visual clues** related to one country.
+- The user enters the country name using a text input field.
+- The **Check** button validates the answer.
+
+### Result Flow
+- If the answer is correct:
+  - The correct country name is shown.
+  - A **Next** button appears to continue to the next level.
+
+---
+
+## 🌎 The World — Places Mode (planned)
+
+This section is visible in the main menu but will be implemented later.
+
+Planned functionality:
+- A non-quiz mode focused on **world exploration**
+- Show **interesting and beautiful places around the globe**
+- Intended for browsing and inspiration, not guessing
+
+Future ideas:
+- Place lists by country or category
+- Simple descriptions and visual presentation
+- Save or favorite places
+
+---
+
+## 🎨 UI & Design
+
+- Dark-themed quiz screens
+- Bright accent colors for buttons and levels
+- Rounded elements and clean layouts
+- Designed to be simple, modern, and mobile-friendly
+
+---
+
+## 🛠️ Tech Stack
+
+- **Flutter**
+- **Dart**
+- Material Design components
+
+---
+
+## 🚀 Getting Started
+
+```bash
+flutter pub get
+flutter run
+
+## 👤 Author
+
+Shukrulloh
