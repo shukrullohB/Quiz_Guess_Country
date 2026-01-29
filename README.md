@@ -77,6 +77,6 @@ flutter run
 
 ---
 
-**## 👤 Author**
+### 👤 Author
+Shukrullo Baxtiyorov
 
-Shukrulloh
