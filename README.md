@@ -73,4 +73,9 @@ Future ideas:
 
 ```bash
 flutter pub get
-flutter run
+flutter run ```
+
+## Author
+- Name: Shukrullo Baxtiyorov
+- GitHub: https://github.com/shukrullohB
+
