@@ -71,7 +71,6 @@ Future ideas:
 
 ## 🚀 Getting Started
 
-```bash
 flutter pub get
 flutter run
 
