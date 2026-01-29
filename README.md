@@ -75,6 +75,8 @@ Future ideas:
 flutter pub get
 flutter run
 
+---
+
 ## 👤 Author
 
 Shukrulloh
