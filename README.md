@@ -76,7 +76,3 @@ flutter pub get
 flutter run
 
 ---
-
-### 👤 Author
-Shukrullo Baxtiyorov
-
