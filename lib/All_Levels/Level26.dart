@@ -1,18 +1,18 @@
 
 import 'package:flutter/material.dart';
 import 'package:confetti/confetti.dart';
-import 'Level12.dart';
+import 'Level27.dart';
 
-class Level11QuestionPage extends StatefulWidget {
-  const Level11QuestionPage({super.key});
+class Level26QuestionPage extends StatefulWidget {
+  const Level26QuestionPage({super.key});
 
   @override
-  State<Level11QuestionPage> createState() => _Level11QuestionPageState();
+  State<Level26QuestionPage> createState() => _Level26QuestionPageState();
 }
 
-class _Level11QuestionPageState extends State<Level11QuestionPage>
+class _Level26QuestionPageState extends State<Level26QuestionPage>
     with SingleTickerProviderStateMixin {
-  final String answer = 'UZBEKISTAN';
+  final String answer = 'IRELAND';
   final TextEditingController _controller = TextEditingController();
   late final ConfettiController _confettiController =
   ConfettiController(duration: const Duration(seconds: 1));
@@ -25,10 +25,10 @@ class _Level11QuestionPageState extends State<Level11QuestionPage>
       .animate(_shakeController);
 
   final List<String> imagePaths = [
-    'images/uzb.jpg',
-    'images/uzb2.jpg',
-    'images/uzb3.jpg',
-    'images/uzb4.jpg',
+    'images/ireland.jpg',
+    'images/ireland2.jpg',
+    'images/ireland3.jpg',
+    'images/ireland4.jpg',
   ];
 
   String userInput = '';
@@ -75,7 +75,7 @@ class _Level11QuestionPageState extends State<Level11QuestionPage>
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Level 11'),
+        title: const Text('Level 26'),
         backgroundColor: dark2,
         foregroundColor: green,
         centerTitle: true,
@@ -249,7 +249,7 @@ class _Level11QuestionPageState extends State<Level11QuestionPage>
         label: const Text('Next'),
         onPressed: () {
           Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (_) => const Level12QuestionPage()),
+            MaterialPageRoute(builder: (_) => const Level27QuestionPage()),
           );
         },
       )

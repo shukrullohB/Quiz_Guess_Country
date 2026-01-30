@@ -1,18 +1,18 @@
 
 import 'package:flutter/material.dart';
 import 'package:confetti/confetti.dart';
-import 'Level12.dart';
+import 'Level18.dart';
 
-class Level11QuestionPage extends StatefulWidget {
-  const Level11QuestionPage({super.key});
+class Level17QuestionPage extends StatefulWidget {
+  const Level17QuestionPage({super.key});
 
   @override
-  State<Level11QuestionPage> createState() => _Level11QuestionPageState();
+  State<Level17QuestionPage> createState() => _Level17QuestionPageState();
 }
 
-class _Level11QuestionPageState extends State<Level11QuestionPage>
+class _Level17QuestionPageState extends State<Level17QuestionPage>
     with SingleTickerProviderStateMixin {
-  final String answer = 'UZBEKISTAN';
+  final String answer = 'ARGENTINA';
   final TextEditingController _controller = TextEditingController();
   late final ConfettiController _confettiController =
   ConfettiController(duration: const Duration(seconds: 1));
@@ -25,10 +25,10 @@ class _Level11QuestionPageState extends State<Level11QuestionPage>
       .animate(_shakeController);
 
   final List<String> imagePaths = [
-    'images/uzb.jpg',
-    'images/uzb2.jpg',
-    'images/uzb3.jpg',
-    'images/uzb4.jpg',
+    'images/argentina.jpg',
+    'images/argentina2.jpg',
+    'images/argentina3.jpg',
+    'images/argentina4.jpg',
   ];
 
   String userInput = '';
@@ -75,7 +75,7 @@ class _Level11QuestionPageState extends State<Level11QuestionPage>
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Level 11'),
+        title: const Text('Level 6'),
         backgroundColor: dark2,
         foregroundColor: green,
         centerTitle: true,
@@ -249,7 +249,7 @@ class _Level11QuestionPageState extends State<Level11QuestionPage>
         label: const Text('Next'),
         onPressed: () {
           Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (_) => const Level12QuestionPage()),
+            MaterialPageRoute(builder: (_) => const Level18QuestionPage()),
           );
         },
       )

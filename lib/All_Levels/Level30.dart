@@ -1,18 +1,17 @@
 
 import 'package:flutter/material.dart';
 import 'package:confetti/confetti.dart';
-import 'Level12.dart';
 
-class Level11QuestionPage extends StatefulWidget {
-  const Level11QuestionPage({super.key});
+class Level30QuestionPage extends StatefulWidget {
+  const Level30QuestionPage({super.key});
 
   @override
-  State<Level11QuestionPage> createState() => _Level11QuestionPageState();
+  State<Level30QuestionPage> createState() => _Level30QuestionPageState();
 }
 
-class _Level11QuestionPageState extends State<Level11QuestionPage>
+class _Level30QuestionPageState extends State<Level30QuestionPage>
     with SingleTickerProviderStateMixin {
-  final String answer = 'UZBEKISTAN';
+  final String answer = 'PORTUGAL';
   final TextEditingController _controller = TextEditingController();
   late final ConfettiController _confettiController =
   ConfettiController(duration: const Duration(seconds: 1));
@@ -25,10 +24,10 @@ class _Level11QuestionPageState extends State<Level11QuestionPage>
       .animate(_shakeController);
 
   final List<String> imagePaths = [
-    'images/uzb.jpg',
-    'images/uzb2.jpg',
-    'images/uzb3.jpg',
-    'images/uzb4.jpg',
+    'images/portugal.jpg',
+    'images/portugal2.jpg',
+    'images/portugal3.jpg',
+    'images/portugal4.jpg',
   ];
 
   String userInput = '';
@@ -46,6 +45,35 @@ class _Level11QuestionPageState extends State<Level11QuestionPage>
     super.dispose();
   }
 
+  Future<void> _showCongratsDialog() async {
+    if (!mounted) return;
+    await showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (_) => AlertDialog(
+        backgroundColor: const Color(0xFF10182D),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        title: const Text(
+          'Поздравляем!',
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700),
+        ),
+        content: const Text(
+          'Вы угадали страну. Отличная работа!',
+          style: TextStyle(color: Colors.white70),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text(
+              'OK',
+              style: TextStyle(color: Color(0xFF10E17A), fontWeight: FontWeight.w700),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   void _onCheck() {
     setState(() {
       userInput = _controller.text;
@@ -57,6 +85,7 @@ class _Level11QuestionPageState extends State<Level11QuestionPage>
       _confettiController
         ..stop()
         ..play();
+      Future.microtask(_showCongratsDialog);
     } else {
       _shakeController
         ..reset()
@@ -70,12 +99,11 @@ class _Level11QuestionPageState extends State<Level11QuestionPage>
     const dark1 = Color(0xFF1C2340);
     const dark2 = Color(0xFF10182D);
 
-    final textColor =
-    isCorrect ? Colors.green : triedWrong ? Colors.red : Colors.white;
+    final textColor = isCorrect ? Colors.green : triedWrong ? Colors.red : Colors.white;
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Level 11'),
+        title: const Text('Level 30'),
         backgroundColor: dark2,
         foregroundColor: green,
         centerTitle: true,
@@ -118,8 +146,7 @@ class _Level11QuestionPageState extends State<Level11QuestionPage>
                           shrinkWrap: true,
                           physics: const NeverScrollableScrollPhysics(),
                           itemCount: imagePaths.length,
-                          gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
+                          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 2,
                             mainAxisSpacing: 8,
                             crossAxisSpacing: 8,
@@ -164,24 +191,20 @@ class _Level11QuestionPageState extends State<Level11QuestionPage>
                             fillColor: dark1,
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(12),
-                              borderSide:
-                              BorderSide(color: Colors.white.withOpacity(0.15)),
+                              borderSide: BorderSide(color: Colors.white.withOpacity(0.15)),
                             ),
                             enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(12),
-                              borderSide:
-                              BorderSide(color: Colors.white.withOpacity(0.15)),
+                              borderSide: BorderSide(color: Colors.white.withOpacity(0.15)),
                             ),
                             focusedBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(12),
                               borderSide: const BorderSide(color: green, width: 2),
                             ),
                             labelText: 'Type the country',
-                            labelStyle:
-                            TextStyle(color: Colors.white.withOpacity(0.7)),
+                            labelStyle: TextStyle(color: Colors.white.withOpacity(0.7)),
                             hintText: 'Enter your guess',
-                            hintStyle:
-                            TextStyle(color: Colors.white.withOpacity(0.5)),
+                            hintStyle: TextStyle(color: Colors.white.withOpacity(0.5)),
                           ),
                           onChanged: (value) {
                             setState(() {
@@ -249,7 +272,7 @@ class _Level11QuestionPageState extends State<Level11QuestionPage>
         label: const Text('Next'),
         onPressed: () {
           Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (_) => const Level12QuestionPage()),
+            MaterialPageRoute(builder: (_) => const Level30QuestionPage()),
           );
         },
       )
