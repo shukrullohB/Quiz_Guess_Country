@@ -1,6 +1,6 @@
 
-import 'package:flutter/material.dart';
 import 'dart:ui';
+import 'package:flutter/material.dart';
 import 'LevelPage.dart';
 import '../All_Levels/Level1.dart';
 import '../All_Levels/Level2.dart';
@@ -66,8 +66,6 @@ final List<Widget> levelPages = [
   const Level28QuestionPage(),
   const Level29QuestionPage(),
   const Level30QuestionPage(),
-
-
 ];
 
 class LevelSelectPage extends StatelessWidget {
@@ -111,7 +109,7 @@ class LevelSelectPage extends StatelessWidget {
                   padding: const EdgeInsets.only(left: 12, top: 8),
                   child: IconButton(
                     icon: const Icon(Icons.arrow_back, color: Colors.white, size: 30),
-                    onPressed: () => Navigator.of(context).maybePop(),
+                    onPressed: () => Navigator.of(context).pop(),
                   ),
                 ),
                 flexibleSpace: FlexibleSpaceBar(
@@ -210,31 +208,31 @@ class LevelSelectPage extends StatelessWidget {
                               Navigator.of(context).push(
                                 MaterialPageRoute(builder: (_) => const Level12QuestionPage()),
                               );
-                            }else if (level == 13) {
+                            } else if (level == 13) {
                               Navigator.of(context).push(
                                 MaterialPageRoute(builder: (_) => const Level13QuestionPage()),
                               );
-                            }else if (level == 14) {
+                            } else if (level == 14) {
                               Navigator.of(context).push(
                                 MaterialPageRoute(builder: (_) => const Level14QuestionPage()),
                               );
-                            }else if (level == 15) {
+                            } else if (level == 15) {
                               Navigator.of(context).push(
                                 MaterialPageRoute(builder: (_) => const Level15QuestionPage()),
                               );
-                            }else if (level == 16) {
+                            } else if (level == 16) {
                               Navigator.of(context).push(
                                 MaterialPageRoute(builder: (_) => const Level16QuestionPage()),
                               );
-                            }else if (level == 17) {
+                            } else if (level == 17) {
                               Navigator.of(context).push(
                                 MaterialPageRoute(builder: (_) => const Level17QuestionPage()),
                               );
-                            }else if (level == 18) {
+                            } else if (level == 18) {
                               Navigator.of(context).push(
                                 MaterialPageRoute(builder: (_) => const Level18QuestionPage()),
                               );
-                            }else if (level == 19) {
+                            } else if (level == 19) {
                               Navigator.of(context).push(
                                 MaterialPageRoute(builder: (_) => const Level19QuestionPage()),
                               );
@@ -242,31 +240,31 @@ class LevelSelectPage extends StatelessWidget {
                               Navigator.of(context).push(
                                 MaterialPageRoute(builder: (_) => const Level20QuestionPage()),
                               );
-                            }else if (level == 21) {
+                            } else if (level == 21) {
                               Navigator.of(context).push(
                                 MaterialPageRoute(builder: (_) => const Level21QuestionPage()),
                               );
-                            }else if (level == 22) {
+                            } else if (level == 22) {
                               Navigator.of(context).push(
                                 MaterialPageRoute(builder: (_) => const Level22QuestionPage()),
                               );
-                            }else if (level == 23) {
+                            } else if (level == 23) {
                               Navigator.of(context).push(
                                 MaterialPageRoute(builder: (_) => const Level23QuestionPage()),
                               );
-                            }else if (level == 24) {
+                            } else if (level == 24) {
                               Navigator.of(context).push(
                                 MaterialPageRoute(builder: (_) => const Level24QuestionPage()),
                               );
-                            }else if (level == 25) {
+                            } else if (level == 25) {
                               Navigator.of(context).push(
                                 MaterialPageRoute(builder: (_) => const Level25QuestionPage()),
                               );
-                            }else if (level == 26) {
+                            } else if (level == 26) {
                               Navigator.of(context).push(
                                 MaterialPageRoute(builder: (_) => const Level26QuestionPage()),
                               );
-                            }else if (level == 27) {
+                            } else if (level == 27) {
                               Navigator.of(context).push(
                                 MaterialPageRoute(builder: (_) => const Level27QuestionPage()),
                               );
@@ -274,16 +272,15 @@ class LevelSelectPage extends StatelessWidget {
                               Navigator.of(context).push(
                                 MaterialPageRoute(builder: (_) => const Level28QuestionPage()),
                               );
-                            }else if (level == 29) {
+                            } else if (level == 29) {
                               Navigator.of(context).push(
                                 MaterialPageRoute(builder: (_) => const Level29QuestionPage()),
                               );
-                            }else if (level == 30) {
+                            } else if (level == 30) {
                               Navigator.of(context).push(
                                 MaterialPageRoute(builder: (_) => const Level30QuestionPage()),
                               );
-                            }
-                            else {
+                            } else {
                               Navigator.of(context).push(
                                 MaterialPageRoute(
                                   builder: (_) => LevelPage(

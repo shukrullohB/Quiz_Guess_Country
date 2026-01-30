@@ -1,6 +1,6 @@
-
 import 'package:flutter/material.dart';
 import 'package:confetti/confetti.dart';
+import '../Level_Page/levels.dart';
 
 class Level30QuestionPage extends StatefulWidget {
   const Level30QuestionPage({super.key});
@@ -54,11 +54,11 @@ class _Level30QuestionPageState extends State<Level30QuestionPage>
         backgroundColor: const Color(0xFF10182D),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         title: const Text(
-          'Поздравляем!',
+          'Congratulations!',
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700),
         ),
         content: const Text(
-          'Вы угадали страну. Отличная работа!',
+          'You guessed all the countries. Great job!',
           style: TextStyle(color: Colors.white70),
         ),
         actions: [
@@ -102,6 +102,7 @@ class _Level30QuestionPageState extends State<Level30QuestionPage>
     final textColor = isCorrect ? Colors.green : triedWrong ? Colors.red : Colors.white;
 
     return Scaffold(
+      backgroundColor: dark2,
       appBar: AppBar(
         title: const Text('Level 30'),
         backgroundColor: dark2,
@@ -264,17 +265,39 @@ class _Level30QuestionPageState extends State<Level30QuestionPage>
           ),
         ],
       ),
-      floatingActionButton: checkedCorrect
-          ? FloatingActionButton.extended(
-        backgroundColor: Colors.yellowAccent,
-        foregroundColor: Colors.black,
-        icon: const Icon(Icons.arrow_forward),
-        label: const Text('Next'),
-        onPressed: () {
-          Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (_) => const Level30QuestionPage()),
-          );
-        },
+      floatingActionButton: checkedCorrect ? null : null,
+      bottomNavigationBar: checkedCorrect
+          ? Container(
+        color: dark2,
+        child: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(16, 0, 16, 12),
+            child: SizedBox(
+              height: 56,
+              child: ElevatedButton.icon(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFF10E17A),
+                  foregroundColor: Colors.black,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(18),
+                  ),
+                  elevation: 6,
+                ),
+                icon: const Icon(Icons.auto_awesome),
+                label: const Text(
+                  'Choose another level',
+                  style: TextStyle(fontWeight: FontWeight.w800, fontSize: 16),
+                ),
+                onPressed: () {
+                  Navigator.of(context).pushAndRemoveUntil(
+                    MaterialPageRoute(builder: (_) => const LevelSelectPage()),
+                        (route) => false,
+                  );
+                },
+              ),
+            ),
+          ),
+        ),
       )
           : null,
     );

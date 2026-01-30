@@ -1,5 +1,7 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'dart:ui';
 import 'Level_Page/levels.dart';
 import 'Level_Page/LevelPage.dart';
 
@@ -14,6 +16,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Quiz Nature',
+      theme: ThemeData(useMaterial3: true, fontFamily: 'Roboto'),
       home: const MyHomePage(),
       debugShowCheckedModeBanner: false,
     );
@@ -34,9 +37,7 @@ class MyHomePage extends StatelessWidget {
             child: const Text('No'),
           ),
           TextButton(
-            onPressed: () {
-              SystemNavigator.pop();
-            },
+            onPressed: () => SystemNavigator.pop(),
             child: const Text('Yes'),
           ),
         ],
@@ -50,106 +51,146 @@ class MyHomePage extends StatelessWidget {
       body: Stack(
         children: [
           Positioned.fill(
-            child: Image.asset(
-              'images/main_sakura.jpeg',
-              fit: BoxFit.cover,
+            child: Image.asset('images/main_sakura.jpeg', fit: BoxFit.cover),
+          ),
+          Positioned.fill(
+            child: BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
+              child: Container(color: Colors.black.withOpacity(0.15)),
             ),
           ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Spacer(flex: 8),
-              const Text(
-                '🌳',
-                style: TextStyle(fontSize: 150),
-              ),
-              const SizedBox(height: 32),
-              Center(
-                child: Column(
-                  children: [
-                    ElevatedButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const LevelSelectPage(),
+          Center(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 28),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(28),
+                child: BackdropFilter(
+                  filter: ImageFilter.blur(sigmaX: 16, sigmaY: 16),
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 24),
+                    decoration: BoxDecoration(
+                      color: Colors.white.withOpacity(0.12),
+                      borderRadius: BorderRadius.circular(28),
+                      border: Border.all(color: Colors.white.withOpacity(0.25)),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.25),
+                          blurRadius: 18,
+                          offset: const Offset(0, 12),
+                        ),
+                      ],
+                    ),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Text('🌳', style: TextStyle(fontSize: 96)),
+                        const SizedBox(height: 18),
+                        const Text(
+                          'Quiz Nature',
+                          style: TextStyle(
+                            fontSize: 28,
+                            fontWeight: FontWeight.w700,
+                            color: Colors.white,
+                            letterSpacing: 1.2,
                           ),
-                        );
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.green,
-                        padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 16),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30),
                         ),
-                      ),
-                      child: const Text(
-                        'Start',
-                        style: TextStyle(fontSize: 24, color: Colors.white),
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                    ElevatedButton(
-                      onPressed: () {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Кнопка The World нажата')),
-                        );
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.deepPurple,
-                        padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 16),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30),
+                        const SizedBox(height: 32),
+                        HomeButton(
+                          label: 'Start',
+                          gradient: const LinearGradient(colors: [Color(0xFF5CE08E), Color(0xFF29B36F)]),
+                          onTap: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (_) => const LevelSelectPage()),
+                          ),
                         ),
-                      ),
-                      child: const Text(
-                        'The World',
-                        style: TextStyle(fontSize: 24, color: Colors.white),
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                    ElevatedButton(
-                      onPressed: () {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Кнопка Options нажата')),
-                        );
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.blue,
-                        padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 16),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30),
+                        const SizedBox(height: 14),
+                        HomeButton(
+                          label: 'The World',
+                          gradient: const LinearGradient(colors: [Color(0xFF8C5CF4), Color(0xFF5C3FEA)]),
+                          onTap: () => ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text('Кнопка The World нажата')),
+                          ),
                         ),
-                      ),
-                      child: const Text(
-                        'Options',
-                        style: TextStyle(fontSize: 24, color: Colors.white),
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                    ElevatedButton(
-                      onPressed: () {
-                        _showExitDialog(context);
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.red,
-                        padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 16),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30),
+                        const SizedBox(height: 14),
+                        HomeButton(
+                          label: 'Options',
+                          gradient: const LinearGradient(colors: [Color(0xFF54B6FF), Color(0xFF1784FF)]),
+                          onTap: () => ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text('Кнопка Options нажата')),
+                          ),
                         ),
-                      ),
-                      child: const Text(
-                        'Exit',
-                        style: TextStyle(fontSize: 24, color: Colors.white),
-                      ),
+                        const SizedBox(height: 14),
+                        HomeButton(
+                          label: 'Exit',
+                          gradient: const LinearGradient(colors: [Color(0xFFFF6A55), Color(0xFFE53935)]),
+                          onTap: () => _showExitDialog(context),
+                        ),
+                      ],
                     ),
-                  ],
+                  ),
                 ),
               ),
-              const Spacer(flex: 13),
-            ],
+            ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class HomeButton extends StatefulWidget {
+  final String label;
+  final VoidCallback onTap;
+  final Gradient gradient;
+  const HomeButton({
+    super.key,
+    required this.label,
+    required this.onTap,
+    required this.gradient,
+  });
+
+  @override
+  State<HomeButton> createState() => _HomeButtonState();
+}
+
+class _HomeButtonState extends State<HomeButton> {
+  bool _hovered = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return MouseRegion(
+      onEnter: (_) => setState(() => _hovered = true),
+      onExit: (_) => setState(() => _hovered = false),
+      child: AnimatedScale(
+        scale: _hovered ? 1.03 : 1.0,
+        duration: const Duration(milliseconds: 120),
+        child: GestureDetector(
+          onTap: widget.onTap,
+          child: Container(
+            height: 54,
+            decoration: BoxDecoration(
+              gradient: widget.gradient,
+              borderRadius: BorderRadius.circular(18),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.25),
+                  blurRadius: 12,
+                  offset: const Offset(0, 6),
+                ),
+              ],
+            ),
+            alignment: Alignment.center,
+            child: Text(
+              widget.label,
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 20,
+                fontWeight: FontWeight.w700,
+                letterSpacing: 0.2,
+              ),
+            ),
+          ),
+        ),
       ),
     );
   }
