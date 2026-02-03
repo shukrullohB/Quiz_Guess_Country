@@ -1,4 +1,3 @@
-# yaml
 name: quiz
 description: "A new Flutter project."
 publish_to: 'none'
@@ -24,7 +23,7 @@ flutter:
   assets:
     - images/
 
-flutter_icons:
+flutter_launcher_icons:
   android: true
   ios: true
   image_path: images/main_icon.png
