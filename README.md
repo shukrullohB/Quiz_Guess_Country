@@ -84,5 +84,5 @@ flutter run
 ---
 ## Download
 
-[⬇️ Download APK](https://github.com/USERNAME/REPO/releases/download/v1.0.0/app-release.apk)
+[⬇️ Download APK](https://github.com/shukrullohB/Quiz_Guess_Country/releases/download/v1.0.0/app-release.apk)
 
