@@ -1,4 +1,4 @@
-name: iOS (Flutter)
+name: Flutter CI
 
 on:
   push:
@@ -7,8 +7,8 @@ on:
     branches: ["main"]
 
 jobs:
-  build-ios:
-    runs-on: macos-latest
+  flutter-ci:
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
@@ -18,13 +18,14 @@ jobs:
           channel: "stable"
           cache: true
 
+      - name: Flutter version
+        run: flutter --version
+
       - name: Install dependencies
         run: flutter pub get
 
-      - name: Install CocoaPods
-        run: |
-          cd ios
-          pod install
+      - name: Analyze
+        run: flutter analyze
 
-      - name: Build iOS (no codesign)
-        run: flutter build ios --no-codesign
+      - name: Run tests
+        run: flutter test
