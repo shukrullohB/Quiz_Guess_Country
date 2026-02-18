@@ -1,7 +1,7 @@
-// lib/all_levels/level1.dart
+
 import 'package:flutter/material.dart';
 import 'package:confetti/confetti.dart';
-import '../All_Levels/level2.dart';
+import '../all_levels/level2.dart';
 
 class Level1QuestionPage extends StatefulWidget {
   const Level1QuestionPage({super.key});
