@@ -1,8 +1,8 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'dart:ui';
 import 'level_page/levels.dart';
+import 'the_world/world.dart';
 
 void main() {
   runApp(const MyApp());
@@ -106,8 +106,9 @@ class MyHomePage extends StatelessWidget {
                         HomeButton(
                           label: 'The World',
                           gradient: const LinearGradient(colors: [Color(0xFF8C5CF4), Color(0xFF5C3FEA)]),
-                          onTap: () => ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: Text('Кнопка The World нажата')),
+                          onTap: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (_) => const World()),
                           ),
                         ),
                         const SizedBox(height: 14),
