@@ -13,6 +13,8 @@ The app contains a main menu with the following sections:
 - **Options**
 - **Exit**
 
+<img width="1044" height="500" alt="world-explorer" src="https://github.com/user-attachments/assets/0a41a71b-e762-4ed2-b8fc-763963488dcb" />
+
 ---
 
 ## 🎮 Start — Quiz Mode (current)
