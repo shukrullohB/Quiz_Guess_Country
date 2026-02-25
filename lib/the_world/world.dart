@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class World extends StatefulWidget {
   const World({super.key});
@@ -11,72 +12,72 @@ class _WorldState extends State<World> {
   final List<_WorldNode> _nodes = const [
     _WorldNode(
       id: 1,
-      title: 'Norway Fjords',
-      imageAsset: 'images/norway.jpg',
-      location: '61.20, 6.50',
+      title: '(Rainbow River), Colombia',
+      imageAsset: 'images/world1.jpg',
+      location: 'https://maps.app.goo.gl/6R8t4bh1y3hBufbi8',
       position: Offset(0.16, 0.86),
     ),
     _WorldNode(
       id: 2,
-      title: 'Greenland Ice',
-      imageAsset: 'images/greenland.jpg',
-      location: '64.18, -51.74',
+      title: 'Zhangye Danxia), China',
+      imageAsset: 'images/world2.jpg',
+      location: 'https://maps.app.goo.gl/LitDwrqm2WAbWWgb9',
       position: Offset(0.30, 0.78),
     ),
     _WorldNode(
       id: 3,
-      title: 'Georgia Peaks',
-      imageAsset: 'images/georgia.jpg',
-      location: '42.66, 44.62',
+      title: ' (Lake Hillier), Australia',
+      imageAsset: 'images/world3.png',
+      location: 'https://maps.app.goo.gl/v4UWhSuLqqL8F1Pf8',
       position: Offset(0.20, 0.68),
     ),
     _WorldNode(
       id: 4,
-      title: 'Ecuador Forest',
-      imageAsset: 'images/ecuador.jpg',
-      location: '-0.18, -78.47',
+      title: '(Vinicunca), Peru',
+      imageAsset: 'images/world4.png',
+      location: 'https://maps.app.goo.gl/5WzpBqdtXTo94NrD6',
       position: Offset(0.42, 0.60),
     ),
     _WorldNode(
       id: 5,
-      title: 'Malta Coast',
-      imageAsset: 'images/malta.jpg',
-      location: '35.90, 14.52',
+      title: ' (Thor’s Well), USA',
+      imageAsset: 'images/world5.png',
+      location: 'https://maps.app.goo.gl/NQUYNBCJN6K2WAaD8',
       position: Offset(0.28, 0.50),
     ),
     _WorldNode(
       id: 6,
-      title: 'Greece Cliffs',
-      imageAsset: 'images/greece.jpg',
-      location: '36.39, 25.46',
+      title: '(Red Beach), China',
+      imageAsset: 'images/world6.png',
+      location: 'https://maps.app.goo.gl/eZxgzDMF8F8izvGQ9',
       position: Offset(0.52, 0.45),
     ),
     _WorldNode(
       id: 7,
-      title: 'Italy Hills',
-      imageAsset: 'images/italy.jpg',
-      location: '43.77, 11.25',
+      title: '(Pamukkale), Turkey',
+      imageAsset: 'images/world7.png',
+      location: 'https://maps.app.goo.gl/oVtnmivVmuW5243z5',
       position: Offset(0.38, 0.36),
     ),
     _WorldNode(
       id: 8,
-      title: 'France Valley',
-      imageAsset: 'images/france.jpg',
-      location: '45.76, 4.84',
+      title: '(Champagne Pool), New Zealand',
+      imageAsset: 'images/world8.png',
+      location: 'https://maps.app.goo.gl/61uJMKUZ1F6ex45x5',
       position: Offset(0.60, 0.32),
     ),
     _WorldNode(
       id: 9,
-      title: 'Germany Lake',
-      imageAsset: 'images/germany.jpg',
-      location: '52.52, 13.40',
+      title: '(Tianzi Mountains), China',
+      imageAsset: 'images/world9.jpg',
+      location: 'https://maps.app.goo.gl/RZiUZuWftVA5RwQR6',
       position: Offset(0.46, 0.22),
     ),
     _WorldNode(
       id: 10,
-      title: 'Spain Coast',
-      imageAsset: 'images/spain.jpg',
-      location: '40.42, -3.70',
+      title: '(Chocolate Hills), Philippines',
+      imageAsset: 'images/world10.jpg',
+      location: 'https://maps.app.goo.gl/bbKu3qCfYXeNpTVg6',
       position: Offset(0.66, 0.16),
     ),
   ];
@@ -136,11 +137,12 @@ class _WorldState extends State<World> {
                 ),
               ),
               ..._nodes.map((node) {
+                const nodeYOffset = -48.0;
                 final left = node.position.dx * constraints.maxWidth;
-                final top = node.position.dy * constraints.maxHeight;
+                final top = node.position.dy * constraints.maxHeight + nodeYOffset;
                 return Positioned(
-                  left: left - 24,
-                  top: top - 24,
+                  left: left - 28,
+                  top: top - 28,
                   child: _WorldNodeWidget(
                     node: node,
                     onTap: () => _showNodeDetails(node),
@@ -208,17 +210,91 @@ class _WorldState extends State<World> {
                 ),
               ),
               const SizedBox(height: 12),
-              Text(
-                'Location: ${node.location}',
-                style: TextStyle(
-                  color: Colors.white.withValues(alpha: 0.85),
-                  fontSize: 14,
-                ),
+              Row(
+                children: [
+                  Expanded(
+                    child: InkWell(
+                      onTap: () => _openLocation(node),
+                      borderRadius: BorderRadius.circular(12),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          border: Border.all(color: const Color(0xFFF59E0B), width: 1.5),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 10),
+                        child: Row(
+                          children: [
+                            Container(
+                              width: 34,
+                              height: 34,
+                              decoration: BoxDecoration(
+                                color: const Color(0xFFF59E0B),
+                                shape: BoxShape.circle,
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withValues(alpha: 0.35),
+                                    blurRadius: 10,
+                                    offset: const Offset(0, 6),
+                                  ),
+                                ],
+                              ),
+                              alignment: Alignment.center,
+                              child: const Icon(Icons.location_on, color: Color(0xFF0F172A), size: 20),
+                            ),
+                            const SizedBox(width: 10),
+                            Text(
+                              'Location',
+                              style: TextStyle(
+                                color: Colors.white.withValues(alpha: 0.9),
+                                fontSize: 15,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
         );
       },
+    );
+  }
+
+  Future<void> _openLocation(_WorldNode node) async {
+    final uri = _buildMapsUri(node.location);
+    if (uri == null) {
+      _showLocationError();
+      return;
+    }
+
+    if (!await launchUrl(uri, mode: LaunchMode.externalApplication)) {
+      _showLocationError();
+    }
+  }
+
+  Uri? _buildMapsUri(String location) {
+    final trimmed = location.trim();
+    if (trimmed.startsWith('http://') || trimmed.startsWith('https://')) {
+      return Uri.tryParse(trimmed);
+    }
+
+    final parts = trimmed.split(',');
+    if (parts.length != 2) return null;
+
+    final lat = double.tryParse(parts[0].trim());
+    final lon = double.tryParse(parts[1].trim());
+    if (lat == null || lon == null) return null;
+
+    return Uri.parse('https://www.google.com/maps/search/?api=1&query=$lat,$lon');
+  }
+
+  void _showLocationError() {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Unable to open location. Please try again later.')),
     );
   }
 }
@@ -262,39 +338,59 @@ class _WorldNodeWidget extends StatelessWidget {
       child: Column(
         children: [
           Container(
-            width: 48,
-            height: 48,
+            width: 56,
+            height: 56,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               gradient: const LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
                 colors: [Color(0xFFFFD17A), Color(0xFF38BDF8)],
               ),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withValues(alpha: 0.35),
-                  blurRadius: 12,
+                  color: const Color(0xFF38BDF8).withValues(alpha: 0.35),
+                  blurRadius: 16,
                   offset: const Offset(0, 8),
                 ),
               ],
-              border: Border.all(color: Colors.white.withValues(alpha: 0.75), width: 1.5),
+              border: Border.all(color: Colors.white.withValues(alpha: 0.9), width: 2),
             ),
             alignment: Alignment.center,
-            child: Text(
-              '${node.id}',
-              style: const TextStyle(
-                color: Color(0xFF0F172A),
-                fontSize: 18,
-                fontWeight: FontWeight.w800,
+            child: Container(
+              width: 44,
+              height: 44,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: const Color(0xFF0F172A).withValues(alpha: 0.2),
+                border: Border.all(color: Colors.white.withValues(alpha: 0.7), width: 1),
+              ),
+              alignment: Alignment.center,
+              child: Text(
+                '${node.id}',
+                style: const TextStyle(
+                  color: Color(0xFF0F172A),
+                  fontSize: 18,
+                  fontWeight: FontWeight.w800,
+                ),
               ),
             ),
           ),
           const SizedBox(height: 6),
-          Text(
-            node.title,
-            style: TextStyle(
-              color: Colors.white.withValues(alpha: 0.85),
-              fontSize: 11,
-              fontWeight: FontWeight.w600,
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+            decoration: BoxDecoration(
+              color: Colors.black.withValues(alpha: 0.35),
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(color: Colors.white.withValues(alpha: 0.2)),
+            ),
+            child: Text(
+              node.title,
+              style: TextStyle(
+                color: Colors.white.withValues(alpha: 0.92),
+                fontSize: 11,
+                fontWeight: FontWeight.w600,
+              ),
             ),
           ),
         ],
@@ -315,30 +411,47 @@ class _WorldConnectionsPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final glowPaint = Paint()
-      ..color = Colors.white.withValues(alpha: 0.28)
-      ..strokeWidth = 10
+      ..color = Colors.white.withValues(alpha: 0.25)
+      ..strokeWidth = 12
       ..style = PaintingStyle.stroke
       ..strokeCap = StrokeCap.round
-      ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 8);
+      ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 10);
+
+    const nodeRadius = 28.0;
+    const nodeYOffset = -48.0;
 
     for (final edge in edges) {
       final from = nodes.firstWhere((node) => node.id == edge.fromId).position;
       final to = nodes.firstWhere((node) => node.id == edge.toId).position;
-      final start = Offset(from.dx * size.width, from.dy * size.height);
-      final end = Offset(to.dx * size.width, to.dy * size.height);
-      final path = _buildCurvedPath(start, end, edge);
+      final start = Offset(from.dx * size.width, from.dy * size.height + nodeYOffset);
+      final end = Offset(to.dx * size.width, to.dy * size.height + nodeYOffset);
+      final rawPath = _buildCurvedPath(start, end, edge);
+      final path = _trimPath(rawPath, nodeRadius);
 
       final linePaint = Paint()
         ..shader = const LinearGradient(
-          colors: [Color(0xFFFFD17A), Color(0xFF7EE8FA)],
+          colors: [Color(0xFFFFD17A), Color(0xFF7EE8FA), Color(0xFF38BDF8)],
         ).createShader(Rect.fromPoints(start, end))
-        ..strokeWidth = 3.5
+        ..strokeWidth = 4.5
         ..style = PaintingStyle.stroke
         ..strokeCap = StrokeCap.round;
 
       canvas.drawPath(path, glowPaint);
       canvas.drawPath(path, linePaint);
     }
+  }
+
+  Path _trimPath(Path path, double trim) {
+    final metrics = path.computeMetrics();
+    if (metrics.isEmpty) return path;
+
+    final metric = metrics.first;
+    final length = metric.length;
+    final start = trim.clamp(0.0, length).toDouble();
+    final end = (length - trim).clamp(0.0, length).toDouble();
+    if (end <= start) return path;
+
+    return metric.extractPath(start, end);
   }
 
   Path _buildCurvedPath(Offset start, Offset end, _WorldEdge edge) {
