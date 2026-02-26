@@ -85,6 +85,6 @@ flutter run
 
 ---
 ## Download
-
-[⬇️ Download APK](https://github.com/shukrullohB/Quiz_Guess_Country/releases/download/v1.0.1/app-release.apk)
+Lasest version
+[⬇️ Download APK](https://github.com/shukrullohB/Quiz_Guess_Country/releases/download/v1.0.2/app-release.apk)
 
