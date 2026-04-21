@@ -1,29 +1,118 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'dart:ui';
+
+import 'intro/animated_intro_page.dart';
 import 'level_page/levels.dart';
+import 'options/options_page.dart';
+import 'settings/app_settings.dart';
+import 'settings/settings_controller.dart';
+import 'settings/settings_repository.dart';
+import 'settings/settings_scope.dart';
 import 'the_world/world.dart';
 
-void main() {
-  runApp(const MyApp());
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  final repository = SettingsRepository();
+  final initialSettings = await repository.load();
+  final controller = SettingsController(
+    repository: repository,
+    initial: initialSettings,
+  );
+
+  runApp(MyApp(settingsController: controller));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({
+    super.key,
+    required this.settingsController,
+  });
+
+  final SettingsController settingsController;
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Quiz Nature',
-      theme: ThemeData(useMaterial3: true, fontFamily: 'Roboto'),
-      home: const MyHomePage(),
-      debugShowCheckedModeBanner: false,
+    return SettingsScope(
+      controller: settingsController,
+      child: ValueListenableBuilder<AppSettings>(
+        valueListenable: settingsController,
+        builder: (context, settings, _) {
+          return MaterialApp(
+            title: 'World Explorer',
+            theme: ThemeData(useMaterial3: true, fontFamily: 'Roboto'),
+            debugShowCheckedModeBanner: false,
+            home: _AppEntry(settings: settings),
+          );
+        },
+      ),
     );
   }
 }
 
-class MyHomePage extends StatelessWidget {
+class _AppEntry extends StatefulWidget {
+  const _AppEntry({required this.settings});
+
+  final AppSettings settings;
+
+  @override
+  State<_AppEntry> createState() => _AppEntryState();
+}
+
+class _AppEntryState extends State<_AppEntry> {
+  bool _introDone = false;
+
+  @override
+  Widget build(BuildContext context) {
+    if (!_introDone) {
+      return AnimatedIntroPage(
+        animationsEnabled: widget.settings.animationsEnabled,
+        onCompleted: () {
+          if (!mounted) return;
+          setState(() => _introDone = true);
+        },
+      );
+    }
+
+    return const MyHomePage();
+  }
+}
+
+class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
+
+  @override
+  State<MyHomePage> createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateMixin {
+  late final AnimationController _entranceController = AnimationController(
+    vsync: this,
+    duration: const Duration(milliseconds: 900),
+  );
+
+  bool _didInitEntrance = false;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (_didInitEntrance) return;
+    _didInitEntrance = true;
+    final animationsEnabled = SettingsScope.of(context).value.animationsEnabled;
+    if (animationsEnabled) {
+      _entranceController.forward();
+    } else {
+      _entranceController.value = 1;
+    }
+  }
+
+  @override
+  void dispose() {
+    _entranceController.dispose();
+    super.dispose();
+  }
 
   void _showExitDialog(BuildContext context) {
     showDialog(
@@ -46,6 +135,9 @@ class MyHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final settingsController = SettingsScope.of(context);
+    final animationsEnabled = settingsController.value.animationsEnabled;
+
     return Scaffold(
       body: Stack(
         children: [
@@ -55,12 +147,12 @@ class MyHomePage extends StatelessWidget {
           Positioned.fill(
             child: BackdropFilter(
               filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
-              child: Container(color: Colors.black.withValues(alpha: 0.15)),
+              child: Container(color: Colors.black.withValues(alpha: 0.14)),
             ),
           ),
           Center(
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 28),
+              padding: const EdgeInsets.symmetric(horizontal: 24),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(28),
                 child: BackdropFilter(
@@ -70,7 +162,7 @@ class MyHomePage extends StatelessWidget {
                     decoration: BoxDecoration(
                       color: Colors.white.withValues(alpha: 0.12),
                       borderRadius: BorderRadius.circular(28),
-                      border: Border.all(color: Colors.white.withValues(alpha: 0.25)),
+                      border: Border.all(color: Colors.white.withValues(alpha: 0.24)),
                       boxShadow: [
                         BoxShadow(
                           color: Colors.black.withValues(alpha: 0.25),
@@ -82,48 +174,90 @@ class MyHomePage extends StatelessWidget {
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        const Text('🌳', style: TextStyle(fontSize: 96)),
-                        const SizedBox(height: 18),
+                        Container(
+                          width: 88,
+                          height: 88,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(22),
+                            boxShadow: [
+                              BoxShadow(
+                                color: const Color(0xFF22D3EE).withValues(alpha: 0.35),
+                                blurRadius: 18,
+                                spreadRadius: 1,
+                              ),
+                            ],
+                          ),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(22),
+                            child: Image.asset('images/logo.png', fit: BoxFit.cover),
+                          ),
+                        ),
+                        const SizedBox(height: 16),
                         const Text(
-                          'Quiz Nature',
+                          'World Explorer',
                           style: TextStyle(
-                            fontSize: 28,
+                            fontSize: 30,
                             fontWeight: FontWeight.w700,
                             color: Colors.white,
-                            letterSpacing: 1.2,
+                            letterSpacing: 1,
                           ),
                         ),
-                        const SizedBox(height: 32),
-                        HomeButton(
-                          label: 'Start',
-                          gradient: const LinearGradient(colors: [Color(0xFF5CE08E), Color(0xFF29B36F)]),
-                          onTap: () => Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (_) => const LevelSelectPage()),
+                        const SizedBox(height: 28),
+                        _buildAnimatedButton(
+                          index: 0,
+                          animationsEnabled: animationsEnabled,
+                          child: HomeButton(
+                            label: 'Start',
+                            icon: Icons.play_arrow_rounded,
+                            gradient: const LinearGradient(colors: [Color(0xFF56E29A), Color(0xFF27B96A)]),
+                            animationsEnabled: animationsEnabled,
+                            onTap: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (_) => const LevelSelectPage()),
+                            ),
                           ),
                         ),
-                        const SizedBox(height: 14),
-                        HomeButton(
-                          label: 'The World',
-                          gradient: const LinearGradient(colors: [Color(0xFF8C5CF4), Color(0xFF5C3FEA)]),
-                          onTap: () => Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (_) => const World()),
+                        const SizedBox(height: 12),
+                        _buildAnimatedButton(
+                          index: 1,
+                          animationsEnabled: animationsEnabled,
+                          child: HomeButton(
+                            label: 'The World',
+                            icon: Icons.public,
+                            gradient: const LinearGradient(colors: [Color(0xFF47C2FF), Color(0xFF287EF2)]),
+                            animationsEnabled: animationsEnabled,
+                            onTap: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (_) => const World()),
+                            ),
                           ),
                         ),
-                        const SizedBox(height: 14),
-                        HomeButton(
-                          label: 'Options',
-                          gradient: const LinearGradient(colors: [Color(0xFF54B6FF), Color(0xFF1784FF)]),
-                          onTap: () => ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: Text('Кнопка Options нажата')),
+                        const SizedBox(height: 12),
+                        _buildAnimatedButton(
+                          index: 2,
+                          animationsEnabled: animationsEnabled,
+                          child: HomeButton(
+                            label: 'Options',
+                            icon: Icons.tune,
+                            gradient: const LinearGradient(colors: [Color(0xFFFFBE4A), Color(0xFFF0852D)]),
+                            animationsEnabled: animationsEnabled,
+                            onTap: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (_) => const OptionsPage()),
+                            ),
                           ),
                         ),
-                        const SizedBox(height: 14),
-                        HomeButton(
-                          label: 'Exit',
-                          gradient: const LinearGradient(colors: [Color(0xFFFF6A55), Color(0xFFE53935)]),
-                          onTap: () => _showExitDialog(context),
+                        const SizedBox(height: 12),
+                        _buildAnimatedButton(
+                          index: 3,
+                          animationsEnabled: animationsEnabled,
+                          child: HomeButton(
+                            label: 'Exit',
+                            icon: Icons.logout,
+                            gradient: const LinearGradient(colors: [Color(0xFFFF6A55), Color(0xFFE53935)]),
+                            animationsEnabled: animationsEnabled,
+                            onTap: () => _showExitDialog(context),
+                          ),
                         ),
                       ],
                     ),
@@ -136,58 +270,149 @@ class MyHomePage extends StatelessWidget {
       ),
     );
   }
+
+  Widget _buildAnimatedButton({
+    required int index,
+    required bool animationsEnabled,
+    required Widget child,
+  }) {
+    if (!animationsEnabled) return child;
+
+    final start = index * 0.12;
+    final end = (start + 0.45).clamp(0.0, 1.0);
+
+    final curved = CurvedAnimation(
+      parent: _entranceController,
+      curve: Interval(start, end, curve: Curves.easeOutCubic),
+    );
+
+    return FadeTransition(
+      opacity: curved,
+      child: SlideTransition(
+        position: Tween<Offset>(begin: const Offset(0, 0.15), end: Offset.zero).animate(curved),
+        child: child,
+      ),
+    );
+  }
 }
 
 class HomeButton extends StatefulWidget {
-  final String label;
-  final VoidCallback onTap;
-  final Gradient gradient;
   const HomeButton({
     super.key,
     required this.label,
+    required this.icon,
     required this.onTap,
     required this.gradient,
+    required this.animationsEnabled,
   });
+
+  final String label;
+  final IconData icon;
+  final VoidCallback onTap;
+  final Gradient gradient;
+  final bool animationsEnabled;
 
   @override
   State<HomeButton> createState() => _HomeButtonState();
 }
 
-class _HomeButtonState extends State<HomeButton> {
+class _HomeButtonState extends State<HomeButton> with SingleTickerProviderStateMixin {
   bool _hovered = false;
+  bool _pressed = false;
+
+  late final AnimationController _iconPulse = AnimationController(
+    vsync: this,
+    duration: const Duration(milliseconds: 1400),
+  );
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.animationsEnabled) {
+      _iconPulse.repeat(reverse: true);
+    } else {
+      _iconPulse.value = 1;
+    }
+  }
+
+  @override
+  void didUpdateWidget(covariant HomeButton oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.animationsEnabled != oldWidget.animationsEnabled) {
+      if (widget.animationsEnabled) {
+        _iconPulse.repeat(reverse: true);
+      } else {
+        _iconPulse
+          ..stop()
+          ..value = 1;
+      }
+    }
+  }
+
+  @override
+  void dispose() {
+    _iconPulse.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
+    final scale = _pressed ? 0.985 : (_hovered ? 1.02 : 1.0);
+    final baseShadow = _pressed ? 5.0 : 11.0;
+
     return MouseRegion(
       onEnter: (_) => setState(() => _hovered = true),
       onExit: (_) => setState(() => _hovered = false),
-      child: AnimatedScale(
-        scale: _hovered ? 1.03 : 1.0,
-        duration: const Duration(milliseconds: 120),
-        child: GestureDetector(
-          onTap: widget.onTap,
-          child: Container(
-            height: 54,
+      child: GestureDetector(
+        onTapDown: (_) => setState(() => _pressed = true),
+        onTapCancel: () => setState(() => _pressed = false),
+        onTapUp: (_) => setState(() => _pressed = false),
+        onTap: widget.onTap,
+        child: AnimatedScale(
+          scale: scale,
+          duration: const Duration(milliseconds: 120),
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 120),
+            height: 56,
             decoration: BoxDecoration(
               gradient: widget.gradient,
               borderRadius: BorderRadius.circular(18),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withValues(alpha: 0.25),
-                  blurRadius: 12,
+                  color: Colors.black.withValues(alpha: 0.28),
+                  blurRadius: baseShadow,
                   offset: const Offset(0, 6),
                 ),
               ],
             ),
-            alignment: Alignment.center,
-            child: Text(
-              widget.label,
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 20,
-                fontWeight: FontWeight.w700,
-                letterSpacing: 0.2,
-              ),
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Row(
+              children: [
+                AnimatedBuilder(
+                  animation: _iconPulse,
+                  builder: (_, __) {
+                    final pulse = widget.animationsEnabled ? (0.95 + (_iconPulse.value * 0.1)) : 1.0;
+                    return Transform.scale(
+                      scale: pulse,
+                      child: Icon(widget.icon, color: Colors.white, size: 24),
+                    );
+                  },
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Text(
+                    widget.label,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 20,
+                      fontWeight: FontWeight.w700,
+                      letterSpacing: 0.2,
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 24),
+              ],
             ),
           ),
         ),

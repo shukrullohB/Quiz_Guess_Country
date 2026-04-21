@@ -1,16 +1,8 @@
-
 import 'dart:ui';
+
 import 'package:flutter/material.dart';
-import 'level_page.dart';
+
 import '../all_levels/level1.dart';
-import '../all_levels/level2.dart';
-import '../all_levels/level3.dart';
-import '../all_levels/level4.dart';
-import '../all_levels/level5.dart';
-import '../all_levels/level6.dart';
-import '../all_levels/level7.dart';
-import '../all_levels/level8.dart';
-import '../all_levels/level9.dart';
 import '../all_levels/level10.dart';
 import '../all_levels/level11.dart';
 import '../all_levels/level12.dart';
@@ -21,6 +13,7 @@ import '../all_levels/level16.dart';
 import '../all_levels/level17.dart';
 import '../all_levels/level18.dart';
 import '../all_levels/level19.dart';
+import '../all_levels/level2.dart';
 import '../all_levels/level20.dart';
 import '../all_levels/level21.dart';
 import '../all_levels/level22.dart';
@@ -31,9 +24,15 @@ import '../all_levels/level26.dart';
 import '../all_levels/level27.dart';
 import '../all_levels/level28.dart';
 import '../all_levels/level29.dart';
+import '../all_levels/level3.dart';
 import '../all_levels/level30.dart';
-
-const List<String> questions = [];
+import '../all_levels/level4.dart';
+import '../all_levels/level5.dart';
+import '../all_levels/level6.dart';
+import '../all_levels/level7.dart';
+import '../all_levels/level8.dart';
+import '../all_levels/level9.dart';
+import '../settings/progress_repository.dart';
 
 final List<Widget> levelPages = [
   const Level1QuestionPage(),
@@ -68,8 +67,27 @@ final List<Widget> levelPages = [
   const Level30QuestionPage(),
 ];
 
-class LevelSelectPage extends StatelessWidget {
+class LevelSelectPage extends StatefulWidget {
   const LevelSelectPage({super.key});
+
+  @override
+  State<LevelSelectPage> createState() => _LevelSelectPageState();
+}
+
+class _LevelSelectPageState extends State<LevelSelectPage> {
+  Set<int> _completedLevels = const <int>{};
+
+  @override
+  void initState() {
+    super.initState();
+    _loadCompleted();
+  }
+
+  Future<void> _loadCompleted() async {
+    final levels = await ProgressRepository().loadCompletedLevels();
+    if (!mounted) return;
+    setState(() => _completedLevels = levels);
+  }
 
   Color _getLevelColor(int level) {
     final t = (level - 1) / 29;
@@ -86,7 +104,7 @@ class LevelSelectPage extends StatelessWidget {
             child: Container(
               decoration: const BoxDecoration(
                 gradient: LinearGradient(
-                  colors: [Color(0xFF23242a), Color(0xFF3a5ba0), Color(0xFF23242a)],
+                  colors: [Color(0xFF23242A), Color(0xFF3A5BA0), Color(0xFF23242A)],
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                 ),
@@ -143,8 +161,9 @@ class LevelSelectPage extends StatelessWidget {
                     childAspectRatio: 1.8,
                   ),
                   delegate: SliverChildBuilderDelegate(
-                        (context, index) {
+                    (context, index) {
                       final level = index + 1;
+                      final completed = _completedLevels.contains(level);
                       return Material(
                         elevation: 4,
                         borderRadius: BorderRadius.circular(18),
@@ -156,148 +175,30 @@ class LevelSelectPage extends StatelessWidget {
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(18),
                             ),
-                            padding: const EdgeInsets.symmetric(vertical: 12),
+                            padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 6),
                             textStyle: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                           ),
-                          onPressed: () {
-                            if (level == 1) {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(builder: (_) => const Level1QuestionPage()),
-                              );
-                            } else if (level == 2) {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(builder: (_) => const Level2QuestionPage()),
-                              );
-                            } else if (level == 3) {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(builder: (_) => const Level3QuestionPage()),
-                              );
-                            } else if (level == 4) {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(builder: (_) => const Level4QuestionPage()),
-                              );
-                            } else if (level == 5) {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(builder: (_) => const Level5QuestionPage()),
-                              );
-                            } else if (level == 6) {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(builder: (_) => const Level6QuestionPage()),
-                              );
-                            } else if (level == 7) {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(builder: (_) => const Level7QuestionPage()),
-                              );
-                            } else if (level == 8) {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(builder: (_) => const Level8QuestionPage()),
-                              );
-                            } else if (level == 9) {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(builder: (_) => const Level9QuestionPage()),
-                              );
-                            } else if (level == 10) {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(builder: (_) => const Level10QuestionPage()),
-                              );
-                            } else if (level == 11) {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(builder: (_) => const Level11QuestionPage()),
-                              );
-                            } else if (level == 12) {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(builder: (_) => const Level12QuestionPage()),
-                              );
-                            } else if (level == 13) {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(builder: (_) => const Level13QuestionPage()),
-                              );
-                            } else if (level == 14) {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(builder: (_) => const Level14QuestionPage()),
-                              );
-                            } else if (level == 15) {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(builder: (_) => const Level15QuestionPage()),
-                              );
-                            } else if (level == 16) {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(builder: (_) => const Level16QuestionPage()),
-                              );
-                            } else if (level == 17) {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(builder: (_) => const Level17QuestionPage()),
-                              );
-                            } else if (level == 18) {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(builder: (_) => const Level18QuestionPage()),
-                              );
-                            } else if (level == 19) {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(builder: (_) => const Level19QuestionPage()),
-                              );
-                            } else if (level == 20) {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(builder: (_) => const Level20QuestionPage()),
-                              );
-                            } else if (level == 21) {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(builder: (_) => const Level21QuestionPage()),
-                              );
-                            } else if (level == 22) {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(builder: (_) => const Level22QuestionPage()),
-                              );
-                            } else if (level == 23) {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(builder: (_) => const Level23QuestionPage()),
-                              );
-                            } else if (level == 24) {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(builder: (_) => const Level24QuestionPage()),
-                              );
-                            } else if (level == 25) {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(builder: (_) => const Level25QuestionPage()),
-                              );
-                            } else if (level == 26) {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(builder: (_) => const Level26QuestionPage()),
-                              );
-                            } else if (level == 27) {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(builder: (_) => const Level27QuestionPage()),
-                              );
-                            } else if (level == 28) {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(builder: (_) => const Level28QuestionPage()),
-                              );
-                            } else if (level == 29) {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(builder: (_) => const Level29QuestionPage()),
-                              );
-                            } else if (level == 30) {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(builder: (_) => const Level30QuestionPage()),
-                              );
-                            } else {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (_) => LevelPage(
-                                    level: level,
-                                    question: questions.length >= level
-                                        ? questions[level - 1]
-                                        : ' $level ',
-                                  ),
-                                ),
-                              );
-                            }
+                          onPressed: () async {
+                            await Navigator.of(context).push(
+                              MaterialPageRoute(builder: (_) => levelPages[index]),
+                            );
+                            if (!mounted) return;
+                            _loadCompleted();
                           },
-                          child: Text('Level $level', textAlign: TextAlign.center),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Flexible(child: Text('Level $level', textAlign: TextAlign.center)),
+                              if (completed) ...[
+                                const SizedBox(width: 6),
+                                const Icon(Icons.check_circle, size: 18),
+                              ],
+                            ],
+                          ),
                         ),
                       );
                     },
-                    childCount: 30,
+                    childCount: levelPages.length,
                   ),
                 ),
               ),

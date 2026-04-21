@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:confetti/confetti.dart';
+import '../settings/progress_repository.dart';
 import 'level8.dart';
 
 class Level7QuestionPage extends StatefulWidget {
@@ -57,6 +58,7 @@ class _Level7QuestionPageState extends State<Level7QuestionPage>
       _confettiController
         ..stop()
         ..play();
+      ProgressRepository().markCompleted(7);
     } else {
       _shakeController
         ..reset()
@@ -257,3 +259,4 @@ class _Level7QuestionPageState extends State<Level7QuestionPage>
     );
   }
 }
+

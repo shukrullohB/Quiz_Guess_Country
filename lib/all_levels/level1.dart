@@ -1,6 +1,6 @@
-
 import 'package:flutter/material.dart';
 import 'package:confetti/confetti.dart';
+import '../settings/progress_repository.dart';
 import '../all_levels/level2.dart';
 
 class Level1QuestionPage extends StatefulWidget {
@@ -14,8 +14,9 @@ class _Level1QuestionPageState extends State<Level1QuestionPage>
     with SingleTickerProviderStateMixin {
   final String answer = 'MEXICO';
   final TextEditingController _controller = TextEditingController();
-  late final ConfettiController _confettiController =
-  ConfettiController(duration: const Duration(seconds: 1));
+  late final ConfettiController _confettiController = ConfettiController(
+    duration: const Duration(seconds: 1),
+  );
   String userInput = '';
   bool triedWrong = false;
   bool checkedCorrect = false;
@@ -25,9 +26,10 @@ class _Level1QuestionPageState extends State<Level1QuestionPage>
     vsync: this,
     duration: const Duration(milliseconds: 350),
   );
-  late final Animation<double> _shakeAnimation = Tween<double>(begin: -8, end: 8)
-      .chain(CurveTween(curve: Curves.linear))
-      .animate(_shakeController);
+  late final Animation<double> _shakeAnimation = Tween<double>(
+    begin: -8,
+    end: 8,
+  ).chain(CurveTween(curve: Curves.linear)).animate(_shakeController);
 
   final List<String> imagePaths = [
     'images/mexico1.jpg',
@@ -57,6 +59,7 @@ class _Level1QuestionPageState extends State<Level1QuestionPage>
       _confettiController
         ..stop()
         ..play();
+      ProgressRepository().markCompleted(1);
     } else {
       _shakeController
         ..reset()
@@ -66,8 +69,11 @@ class _Level1QuestionPageState extends State<Level1QuestionPage>
 
   @override
   Widget build(BuildContext context) {
-    final textColor =
-    isCorrect ? Colors.green : triedWrong ? Colors.red : Colors.white;
+    final textColor = isCorrect
+        ? Colors.green
+        : triedWrong
+        ? Colors.red
+        : Colors.white;
 
     const green = Color(0xFF10E17A);
     const dark1 = Color(0xFF1C2340);
@@ -97,7 +103,9 @@ class _Level1QuestionPageState extends State<Level1QuestionPage>
                   color: dark2,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(18),
-                    side: BorderSide(color: Colors.white.withValues(alpha: 0.08)),
+                    side: BorderSide(
+                      color: Colors.white.withValues(alpha: 0.08),
+                    ),
                   ),
                   elevation: 6,
                   child: Padding(
@@ -119,11 +127,11 @@ class _Level1QuestionPageState extends State<Level1QuestionPage>
                           physics: const NeverScrollableScrollPhysics(),
                           itemCount: imagePaths.length,
                           gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
-                            mainAxisSpacing: 8,
-                            crossAxisSpacing: 8,
-                          ),
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 2,
+                                mainAxisSpacing: 8,
+                                crossAxisSpacing: 8,
+                              ),
                           itemBuilder: (context, index) {
                             return ClipRRect(
                               borderRadius: BorderRadius.circular(14),
@@ -164,25 +172,31 @@ class _Level1QuestionPageState extends State<Level1QuestionPage>
                             fillColor: dark1,
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(12),
-                              borderSide:
-                              BorderSide(color: Colors.white.withValues(alpha: 0.15)),
+                              borderSide: BorderSide(
+                                color: Colors.white.withValues(alpha: 0.15),
+                              ),
                             ),
                             enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(12),
-                              borderSide:
-                              BorderSide(color: Colors.white.withValues(alpha: 0.15)),
+                              borderSide: BorderSide(
+                                color: Colors.white.withValues(alpha: 0.15),
+                              ),
                             ),
                             focusedBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(12),
-                              borderSide:
-                              const BorderSide(color: green, width: 2),
+                              borderSide: const BorderSide(
+                                color: green,
+                                width: 2,
+                              ),
                             ),
                             labelText: 'Type the country',
-                            labelStyle:
-                            TextStyle(color: Colors.white.withValues(alpha: 0.7)),
+                            labelStyle: TextStyle(
+                              color: Colors.white.withValues(alpha: 0.7),
+                            ),
                             hintText: 'Enter your guess',
-                            hintStyle:
-                            TextStyle(color: Colors.white.withValues(alpha: 0.5)),
+                            hintStyle: TextStyle(
+                              color: Colors.white.withValues(alpha: 0.5),
+                            ),
                           ),
                           onChanged: (value) {
                             setState(() {
@@ -244,18 +258,16 @@ class _Level1QuestionPageState extends State<Level1QuestionPage>
       ),
       floatingActionButton: checkedCorrect
           ? FloatingActionButton.extended(
-        backgroundColor: Colors.yellowAccent,
-        foregroundColor: Colors.black,
-        icon: const Icon(Icons.arrow_forward),
-        label: const Text('Next'),
-        onPressed: () {
-          Navigator.of(context).pushReplacement(
-            MaterialPageRoute(
-              builder: (_) => const Level2QuestionPage(),
-            ),
-          );
-        },
-      )
+              backgroundColor: Colors.yellowAccent,
+              foregroundColor: Colors.black,
+              icon: const Icon(Icons.arrow_forward),
+              label: const Text('Next'),
+              onPressed: () {
+                Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(builder: (_) => const Level2QuestionPage()),
+                );
+              },
+            )
           : null,
     );
   }
