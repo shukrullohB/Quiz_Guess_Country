@@ -76,6 +76,8 @@ class LevelSelectPage extends StatefulWidget {
 
 class _LevelSelectPageState extends State<LevelSelectPage> {
   Set<int> _completedLevels = const <int>{};
+  int _highestCompletedLevel = 0;
+  bool _loadingProgress = true;
 
   @override
   void initState() {
@@ -84,9 +86,122 @@ class _LevelSelectPageState extends State<LevelSelectPage> {
   }
 
   Future<void> _loadCompleted() async {
-    final levels = await ProgressRepository().loadCompletedLevels();
+    final repository = ProgressRepository();
+    final levels = await repository.loadCompletedLevels();
+    final storedHighest = await repository.loadHighestCompletedLevel();
+    var computedHighest = storedHighest;
+    for (final level in levels) {
+      if (level > computedHighest) computedHighest = level;
+    }
     if (!mounted) return;
-    setState(() => _completedLevels = levels);
+    setState(() {
+      _completedLevels = levels;
+      _highestCompletedLevel = computedHighest;
+      _loadingProgress = false;
+    });
+  }
+
+  int get _nextUnlockedLevel {
+    final candidate = _highestCompletedLevel + 1;
+    if (candidate < 1) return 1;
+    if (candidate > levelPages.length) return levelPages.length;
+    return candidate;
+  }
+
+  bool _isUnlocked(int level) {
+    if (level == 1) return true;
+    return level <= _nextUnlockedLevel || _completedLevels.contains(level);
+  }
+
+  String _lockHint(int level) {
+    final required = level - 1;
+    return 'Complete Level $required to unlock Level $level.';
+  }
+
+  bool _isAllCompleted(int completedCount) => completedCount >= levelPages.length;
+
+  Future<void> _onProgressTap(int completedCount) async {
+    if (_loadingProgress) return;
+
+    if (_isAllCompleted(completedCount)) {
+      await _showAllCompletedDialog();
+      return;
+    }
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          'Keep going. Complete Level $_nextUnlockedLevel to unlock the next one.',
+        ),
+      ),
+    );
+  }
+
+  Future<void> _showAllCompletedDialog() async {
+    final restart = await showDialog<bool>(
+      context: context,
+      builder: (ctx) {
+        return AlertDialog(
+          backgroundColor: const Color(0xFF10182D),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          title: Row(
+            children: [
+              Container(
+                width: 38,
+                height: 38,
+                decoration: BoxDecoration(
+                  color: const Color(0xFFF59E0B).withValues(alpha: 0.18),
+                  shape: BoxShape.circle,
+                ),
+                child: const Icon(Icons.emoji_events, color: Color(0xFFFDE68A)),
+              ),
+              const SizedBox(width: 10),
+              const Expanded(
+                child: Text(
+                  'World Explorer Master',
+                  style: TextStyle(color: Colors.white, fontWeight: FontWeight.w800),
+                ),
+              ),
+            ],
+          ),
+          content: const Text(
+            'Amazing work. You completed all 30 levels and guessed every country correctly.',
+            style: TextStyle(color: Colors.white70, height: 1.35),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(ctx).pop(false),
+              child: const Text(
+                'Close',
+                style: TextStyle(color: Colors.white70, fontWeight: FontWeight.w700),
+              ),
+            ),
+            FilledButton.icon(
+              style: FilledButton.styleFrom(
+                backgroundColor: const Color(0xFF10E17A),
+                foregroundColor: const Color(0xFF10182D),
+              ),
+              onPressed: () => Navigator.of(ctx).pop(true),
+              icon: const Icon(Icons.restart_alt),
+              label: const Text(
+                'Play Again',
+                style: TextStyle(fontWeight: FontWeight.w800),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+
+    if (restart != true || !mounted) return;
+
+    await ProgressRepository().reset();
+    if (!mounted) return;
+    await _loadCompleted();
+    if (!mounted) return;
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Progress reset. Start from Level 1 again.')),
+    );
   }
 
   Color _getLevelColor(int level) {
@@ -97,7 +212,11 @@ class _LevelSelectPageState extends State<LevelSelectPage> {
 
   @override
   Widget build(BuildContext context) {
+    final completedCount = _completedLevels.length;
+    final allCompleted = _isAllCompleted(completedCount);
+
     return Scaffold(
+      backgroundColor: const Color(0xFF0F172A),
       body: Stack(
         children: [
           Positioned.fill(
@@ -151,8 +270,81 @@ class _LevelSelectPageState extends State<LevelSelectPage> {
                   titlePadding: const EdgeInsets.only(bottom: 8),
                 ),
               ),
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(14, 4, 14, 8),
+                  child: Material(
+                    color: Colors.transparent,
+                    child: InkWell(
+                      borderRadius: BorderRadius.circular(16),
+                      onTap: () => _onProgressTap(completedCount),
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(16),
+                          color: Colors.white.withValues(alpha: 0.10),
+                          border: Border.all(color: Colors.white.withValues(alpha: 0.16)),
+                        ),
+                        child: _loadingProgress
+                            ? const SizedBox(
+                                height: 24,
+                                child: Center(child: CircularProgressIndicator(strokeWidth: 2)),
+                              )
+                            : Row(
+                                children: [
+                                  Icon(
+                                    allCompleted ? Icons.workspace_premium : Icons.flag_circle,
+                                    color: allCompleted
+                                        ? const Color(0xFFFDE68A)
+                                        : Colors.white,
+                                    size: 20,
+                                  ),
+                                  const SizedBox(width: 8),
+                                  Expanded(
+                                    child: Text(
+                                      allCompleted
+                                          ? 'Perfect run: $completedCount/${levelPages.length}. Tap for celebration.'
+                                          : 'Progress: $completedCount/${levelPages.length} completed',
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w700,
+                                      ),
+                                    ),
+                                  ),
+                                  Container(
+                                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                                    decoration: BoxDecoration(
+                                      color: allCompleted
+                                          ? const Color(0xFFF59E0B).withValues(alpha: 0.24)
+                                          : const Color(0xFF10E17A).withValues(alpha: 0.2),
+                                      borderRadius: BorderRadius.circular(12),
+                                      border: Border.all(
+                                        color: allCompleted
+                                            ? const Color(0xFFFDE68A).withValues(alpha: 0.50)
+                                            : const Color(0xFF10E17A).withValues(alpha: 0.45),
+                                      ),
+                                    ),
+                                    child: Text(
+                                      allCompleted
+                                          ? 'Champion'
+                                          : 'Open: Level $_nextUnlockedLevel',
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w700,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
               SliverPadding(
-                padding: const EdgeInsets.all(8),
+                padding: const EdgeInsets.fromLTRB(8, 2, 8, 10),
                 sliver: SliverGrid(
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 3,
@@ -164,14 +356,23 @@ class _LevelSelectPageState extends State<LevelSelectPage> {
                     (context, index) {
                       final level = index + 1;
                       final completed = _completedLevels.contains(level);
+                      final unlocked = _isUnlocked(level);
+                      final tileColor = unlocked
+                          ? _getLevelColor(level)
+                          : const Color(0xFF38475F).withValues(alpha: 0.85);
                       return Material(
-                        elevation: 4,
+                        elevation: unlocked ? 4 : 1,
                         borderRadius: BorderRadius.circular(18),
                         child: OutlinedButton(
                           style: OutlinedButton.styleFrom(
-                            backgroundColor: _getLevelColor(level),
+                            backgroundColor: tileColor,
                             foregroundColor: Colors.white,
-                            side: BorderSide(color: Colors.white.withValues(alpha: 0.3), width: 2),
+                            side: BorderSide(
+                              color: unlocked
+                                  ? Colors.white.withValues(alpha: 0.3)
+                                  : Colors.white.withValues(alpha: 0.14),
+                              width: 2,
+                            ),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(18),
                             ),
@@ -179,6 +380,12 @@ class _LevelSelectPageState extends State<LevelSelectPage> {
                             textStyle: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                           ),
                           onPressed: () async {
+                            if (!unlocked) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(content: Text(_lockHint(level))),
+                              );
+                              return;
+                            }
                             await Navigator.of(context).push(
                               MaterialPageRoute(builder: (_) => levelPages[index]),
                             );
@@ -188,10 +395,27 @@ class _LevelSelectPageState extends State<LevelSelectPage> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Flexible(child: Text('Level $level', textAlign: TextAlign.center)),
+                              Flexible(
+                                child: Text(
+                                  'Level $level',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    color: unlocked
+                                        ? Colors.white
+                                        : Colors.white.withValues(alpha: 0.75),
+                                  ),
+                                ),
+                              ),
                               if (completed) ...[
                                 const SizedBox(width: 6),
                                 const Icon(Icons.check_circle, size: 18),
+                              ] else if (!unlocked) ...[
+                                const SizedBox(width: 6),
+                                Icon(
+                                  Icons.lock_rounded,
+                                  size: 18,
+                                  color: Colors.white.withValues(alpha: 0.85),
+                                ),
                               ],
                             ],
                           ),

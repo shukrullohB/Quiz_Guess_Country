@@ -97,6 +97,7 @@ class _WorldState extends State<World> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xFF0F172A),
       appBar: AppBar(
         title: const Text('The World'),
         backgroundColor: const Color(0xFF0F172A),

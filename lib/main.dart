@@ -42,7 +42,17 @@ class MyApp extends StatelessWidget {
         builder: (context, settings, _) {
           return MaterialApp(
             title: 'World Explorer',
-            theme: ThemeData(useMaterial3: true, fontFamily: 'Roboto'),
+            theme: ThemeData(
+              brightness: Brightness.dark,
+              colorScheme: ColorScheme.fromSeed(
+                seedColor: const Color(0xFF22D3EE),
+                brightness: Brightness.dark,
+              ),
+              useMaterial3: true,
+              fontFamily: 'Roboto',
+              scaffoldBackgroundColor: const Color(0xFF0F172A),
+              canvasColor: const Color(0xFF0F172A),
+            ),
             debugShowCheckedModeBanner: false,
             home: _AppEntry(settings: settings),
           );
@@ -94,10 +104,16 @@ class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateM
   );
 
   bool _didInitEntrance = false;
+  bool _didPrecache = false;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
+    if (!_didPrecache) {
+      _didPrecache = true;
+      precacheImage(const AssetImage('images/main_sakura.jpeg'), context);
+      precacheImage(const AssetImage('images/world_bg.jpg'), context);
+    }
     if (_didInitEntrance) return;
     _didInitEntrance = true;
     final animationsEnabled = SettingsScope.of(context).value.animationsEnabled;
@@ -117,19 +133,111 @@ class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateM
   void _showExitDialog(BuildContext context) {
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Are you sure you want to exit?'),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: const Text('No'),
+      barrierColor: Colors.black.withValues(alpha: 0.52),
+      builder: (context) => Dialog(
+        backgroundColor: Colors.transparent,
+        insetPadding: const EdgeInsets.symmetric(horizontal: 20),
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(24),
+            gradient: const LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [Color(0xFF131B33), Color(0xFF0D1428)],
+            ),
+            border: Border.all(color: Colors.white.withValues(alpha: 0.16)),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withValues(alpha: 0.4),
+                blurRadius: 24,
+                offset: const Offset(0, 12),
+              ),
+            ],
           ),
-          TextButton(
-            onPressed: () => SystemNavigator.pop(),
-            child: const Text('Yes'),
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(20, 20, 20, 16),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
+                  width: 54,
+                  height: 54,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: const Color(0xFFFF6A55).withValues(alpha: 0.18),
+                    border: Border.all(
+                      color: const Color(0xFFFF6A55).withValues(alpha: 0.45),
+                    ),
+                  ),
+                  child: const Icon(Icons.logout_rounded, color: Color(0xFFFF9A8A), size: 28),
+                ),
+                const SizedBox(height: 14),
+                const Text(
+                  'Exit World Explorer?',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.w800,
+                    color: Colors.white,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  'Your progress is saved. You can continue anytime.',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.white.withValues(alpha: 0.76),
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                const SizedBox(height: 18),
+                Row(
+                  children: [
+                    Expanded(
+                      child: OutlinedButton(
+                        style: OutlinedButton.styleFrom(
+                          foregroundColor: Colors.white,
+                          side: BorderSide(color: Colors.white.withValues(alpha: 0.3)),
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+                          padding: const EdgeInsets.symmetric(vertical: 13),
+                        ),
+                        onPressed: () => Navigator.of(context).pop(),
+                        child: const Text(
+                          'Stay',
+                          style: TextStyle(fontWeight: FontWeight.w700),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: FilledButton(
+                        style: FilledButton.styleFrom(
+                          backgroundColor: const Color(0xFFFF6A55),
+                          foregroundColor: Colors.white,
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+                          padding: const EdgeInsets.symmetric(vertical: 13),
+                        ),
+                        onPressed: () => SystemNavigator.pop(),
+                        child: const Text(
+                          'Exit',
+                          style: TextStyle(fontWeight: FontWeight.w800),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
-        ],
+        ),
       ),
+    );
+  }
+
+  Route<void> _buildMenuRoute(Widget page) {
+    return MaterialPageRoute<void>(
+      builder: (_) => page,
     );
   }
 
@@ -211,9 +319,8 @@ class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateM
                             icon: Icons.play_arrow_rounded,
                             gradient: const LinearGradient(colors: [Color(0xFF56E29A), Color(0xFF27B96A)]),
                             animationsEnabled: animationsEnabled,
-                            onTap: () => Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (_) => const LevelSelectPage()),
+                            onTap: () => Navigator.of(context).push(
+                              _buildMenuRoute(const LevelSelectPage()),
                             ),
                           ),
                         ),
@@ -226,9 +333,8 @@ class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateM
                             icon: Icons.public,
                             gradient: const LinearGradient(colors: [Color(0xFF47C2FF), Color(0xFF287EF2)]),
                             animationsEnabled: animationsEnabled,
-                            onTap: () => Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (_) => const World()),
+                            onTap: () => Navigator.of(context).push(
+                              _buildMenuRoute(const World()),
                             ),
                           ),
                         ),
@@ -241,9 +347,8 @@ class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateM
                             icon: Icons.tune,
                             gradient: const LinearGradient(colors: [Color(0xFFFFBE4A), Color(0xFFF0852D)]),
                             animationsEnabled: animationsEnabled,
-                            onTap: () => Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (_) => const OptionsPage()),
+                            onTap: () => Navigator.of(context).push(
+                              _buildMenuRoute(const OptionsPage()),
                             ),
                           ),
                         ),

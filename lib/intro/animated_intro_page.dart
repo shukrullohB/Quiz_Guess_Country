@@ -18,14 +18,14 @@ class _AnimatedIntroPageState extends State<AnimatedIntroPage>
     with SingleTickerProviderStateMixin {
   late final AnimationController _controller = AnimationController(
     vsync: this,
-    duration: const Duration(milliseconds: 1700),
+    duration: const Duration(milliseconds: 1200),
   );
 
-  late final Animation<double> _logoScale = Tween<double>(begin: 0.78, end: 1.0)
+  late final Animation<double> _logoScale = Tween<double>(begin: 0.92, end: 1.0)
       .animate(
         CurvedAnimation(
           parent: _controller,
-          curve: const Interval(0.0, 0.55, curve: Curves.easeOutBack),
+          curve: const Interval(0.0, 0.60, curve: Curves.easeOutCubic),
         ),
       );
 
@@ -53,25 +53,35 @@ class _AnimatedIntroPageState extends State<AnimatedIntroPage>
         ),
       );
 
+  bool _completed = false;
+
   @override
   void initState() {
     super.initState();
+    // Failsafe: intro should never block entering the app.
+    Future<void>.delayed(const Duration(milliseconds: 2200), _complete);
     _play();
   }
 
   Future<void> _play() async {
     if (!widget.animationsEnabled) {
-      await Future<void>.delayed(const Duration(milliseconds: 220));
-      if (mounted) {
-        widget.onCompleted();
-      }
+      await Future<void>.delayed(const Duration(milliseconds: 120));
+      _complete();
       return;
     }
 
-    await _controller.forward();
-    if (mounted) {
-      widget.onCompleted();
+    try {
+      await _controller.forward().timeout(const Duration(milliseconds: 1800));
+    } catch (_) {
+      // Ignore animation errors/timeouts and continue to app.
     }
+    _complete();
+  }
+
+  void _complete() {
+    if (!mounted || _completed) return;
+    _completed = true;
+    widget.onCompleted();
   }
 
   @override

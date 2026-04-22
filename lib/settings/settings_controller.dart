@@ -30,12 +30,10 @@ class SettingsController extends ValueNotifier<AppSettings> {
   Future<void> resetSettings() async {
     await _repository.reset();
     value = AppSettings.defaults;
-    notifyListeners();
   }
 
   Future<void> _save(AppSettings next) async {
     await _repository.save(next);
     value = next;
-    notifyListeners();
   }
 }
