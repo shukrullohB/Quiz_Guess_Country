@@ -12,6 +12,36 @@ import 'settings/settings_repository.dart';
 import 'settings/settings_scope.dart';
 import 'the_world/world.dart';
 
+const _kRouteBackdrop = Color(0xFF0F172A);
+
+class _AppSlideFadeTransitionsBuilder extends PageTransitionsBuilder {
+  const _AppSlideFadeTransitionsBuilder();
+
+  @override
+  Widget buildTransitions<T>(
+    PageRoute<T> route,
+    BuildContext context,
+    Animation<double> animation,
+    Animation<double> secondaryAnimation,
+    Widget child,
+  ) {
+    const begin = Offset(0.12, 0);
+    const end = Offset.zero;
+    final curved = CurvedAnimation(parent: animation, curve: Curves.easeOutCubic);
+
+    return ColoredBox(
+      color: _kRouteBackdrop,
+      child: FadeTransition(
+        opacity: CurvedAnimation(parent: animation, curve: Curves.easeOut),
+        child: SlideTransition(
+          position: Tween<Offset>(begin: begin, end: end).animate(curved),
+          child: child,
+        ),
+      ),
+    );
+  }
+}
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -52,6 +82,16 @@ class MyApp extends StatelessWidget {
               fontFamily: 'Roboto',
               scaffoldBackgroundColor: const Color(0xFF0F172A),
               canvasColor: const Color(0xFF0F172A),
+              pageTransitionsTheme: const PageTransitionsTheme(
+                builders: {
+                  TargetPlatform.android: _AppSlideFadeTransitionsBuilder(),
+                  TargetPlatform.iOS: _AppSlideFadeTransitionsBuilder(),
+                  TargetPlatform.macOS: _AppSlideFadeTransitionsBuilder(),
+                  TargetPlatform.windows: _AppSlideFadeTransitionsBuilder(),
+                  TargetPlatform.linux: _AppSlideFadeTransitionsBuilder(),
+                  TargetPlatform.fuchsia: _AppSlideFadeTransitionsBuilder(),
+                },
+              ),
             ),
             debugShowCheckedModeBanner: false,
             home: _AppEntry(settings: settings),
