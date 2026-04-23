@@ -14,7 +14,7 @@ Main menu sections:
 - **The World** — interactive places map and discovery
 - **Options** — app settings and progress management
 - **Exit**
-
+<img width="1200" height="624" alt="quiz-app-img" src="https://github.com/user-attachments/assets/85644877-a63c-4d15-a998-a11022032b40" />
 ---
 
 ## 🎮 Start — Quiz Mode
