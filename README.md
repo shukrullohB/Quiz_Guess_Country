@@ -124,7 +124,7 @@ All settings and progress are saved locally and restored on restart.
 ```bash
 flutter pub get
 flutter run
-
+```
 ---
 
 ## Author
