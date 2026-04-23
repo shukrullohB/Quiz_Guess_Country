@@ -1,65 +1,98 @@
 # 🌍 World Explorer
 
-World Explorer is a Flutter mobile application focused on **visual geography learning** and **world exploration** using a **level-based quiz system**, with plans to expand into a global places discovery experience.
+**World Explorer** is a Flutter app for visual geography learning and world discovery.  
+It combines a **country-guessing quiz** with a growing **world places exploration** experience.
 
 ---
 
-## 📱 App Overview
+## 📱 Overview
 
-The app contains a main menu with the following sections:
+World Explorer helps users learn countries through images and progression-based gameplay.
 
-- **Start** – country guessing game (levels)
-- **The World** – future world exploration section
-- **Options**
+Main menu sections:
+- **Start** — level-based country quiz
+- **The World** — interactive places map and discovery
+- **Options** — app settings and progress management
 - **Exit**
 
-<img width="1044" height="500" alt="world-explorer" src="https://github.com/user-attachments/assets/0a41a71b-e762-4ed2-b8fc-763963488dcb" />
-
 ---
 
-## 🎮 Start — Quiz Mode (current)
+## 🎮 Start — Quiz Mode
 
-This is the main implemented feature.
+This is the core game mode.
 
-### Level System
-- Levels are displayed in a **grid layout** (Level 1, Level 2, Level 3, etc.).
+### Level Progression
+- The game contains **30 levels**.
 - Each level represents **one country**.
-- Levels are selectable through the **Start** menu.
+- Levels are shown in a grid.
+- Progression is **sequential**:
+  - Only **Level 1** is open at first.
+  - Next levels unlock only after completing previous ones.
+- Completed levels are marked visually.
+- Locked levels show a lock icon and unlock hint.
 
-### Gameplay Logic
-- A level presents **multiple visual clues** related to one country.
-- The user enters the country name using a text input field.
-- The **Check** button validates the answer.
+### Gameplay
+- Each level displays multiple photo clues.
+- User types a country name in an input field.
+- Press **Check** to validate the answer.
 
-### Result Flow
-- If the answer is correct:
-  - The correct country name is shown.
-  - A **Next** button appears to continue to the next level.
+### Feedback Flow
+- Correct answer:
+  - Correct text is shown.
+  - Celebration effect appears.
+  - Progress is saved automatically.
+  - **Next** action appears to continue.
+- Wrong answer:
+  - Clear visual feedback is shown (shake/error state).
+
+### Completion Flow
+- After all levels are completed:
+  - Progress panel shows full completion state.
+  - User gets a congratulation experience.
+  - Optional **Play Again** reset is available.
 
 ---
 
-## 🌎 The World — Places Mode (planned)
+## 🌎 The World — Places Experience
 
-This section is visible in the main menu but will be implemented later.
+The app includes an interactive world places screen.
 
-Planned functionality:
-- A non-quiz mode focused on **world exploration**
-- Show **interesting and beautiful places around the globe**
-- Intended for browsing and inspiration, not guessing
+### Current Experience
+- Visual map with connected place points.
+- Tap nodes to open place details.
+- Place card includes image and external location link.
+- Improved tap reliability and clearer visual selection.
+- Better readability for labels and route path styling.
 
-Future ideas:
-- Place lists by country or category
-- Simple descriptions and visual presentation
-- Save or favorite places
+### Product Direction
+- Continue evolving into a non-quiz exploration mode:
+  - Beautiful and interesting places by country/category
+  - Lightweight descriptions
+  - Save/favorite system
+  - Inspiration-first browsing
 
 ---
 
-## 🎨 UI & Design
+## ⚙️ Options
 
-- Dark-themed quiz screens
-- Bright accent colors for buttons and levels
-- Rounded elements and clean layouts
-- Designed to be simple, modern, and mobile-friendly
+Functional settings are implemented and persisted:
+- **Sound effects** — on/off
+- **Vibration** — on/off
+- **Animations** — on/off
+- **Reset progress** — with confirmation
+
+All settings and progress are saved locally and restored on restart.
+
+---
+
+## ✨ UX & Visual Design
+
+- Dark, modern visual language
+- Bright accent colors for actions and progression
+- Rounded cards/buttons and clean composition
+- Animated intro and polished menu motion
+- Improved navigation transitions
+- Mobile-focused design with readable hierarchy
 
 ---
 
@@ -67,7 +100,22 @@ Future ideas:
 
 - **Flutter**
 - **Dart**
-- Material Design components
+- **Material Design**
+- **shared_preferences** (local persistence)
+- **url_launcher** (external links)
+- **confetti** (success feedback)
+
+---
+
+## 📦 Project Structure (high-level)
+
+- `lib/main.dart` — app entry, theme, routing, main menu
+- `lib/all_levels/` — quiz level screens (1–30)
+- `lib/level_page/levels.dart` — level grid and lock/unlock logic
+- `lib/the_world/world.dart` — world places interactive screen
+- `lib/options/options_page.dart` — settings UI
+- `lib/settings/` — settings/progress repositories and controller
+- `lib/intro/animated_intro_page.dart` — startup intro
 
 ---
 
@@ -76,15 +124,3 @@ Future ideas:
 ```bash
 flutter pub get
 flutter run
-```
----
-
-## Author
-- Name: Shukrullo Baxtiyorov
-- GitHub: https://github.com/shukrullohB
-
----
-## Download
-- **latest version**
-- [⬇️ Download APK](https://github.com/shukrullohB/Quiz_Guess_Country/releases/download/v1.0.2/app-release.apk)
-
