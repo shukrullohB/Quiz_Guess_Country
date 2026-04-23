@@ -125,6 +125,7 @@ All settings and progress are saved locally and restored on restart.
 flutter pub get
 flutter run
 
+---
 
 ## Author
 - Name: Shukrullo Baxtiyorov
