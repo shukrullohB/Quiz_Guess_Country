@@ -124,3 +124,13 @@ All settings and progress are saved locally and restored on restart.
 ```bash
 flutter pub get
 flutter run
+
+
+## Author
+- Name: Shukrullo Baxtiyorov
+- GitHub: https://github.com/shukrullohB
+
+---
+## Download
+- **latest version**
+- [⬇️ Download APK](https://github.com/shukrullohB/Quiz_Guess_Country/releases/download/v2.0.0/app-release.apk)
