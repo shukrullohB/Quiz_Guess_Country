@@ -2,7 +2,10 @@
 
 **World Explorer** is a Flutter app for visual geography learning and world discovery.  
 It combines a **country-guessing quiz** with a growing **world places exploration** experience.
-
+---
+## Download
+- **latest version**
+- [⬇️ Download APK](https://github.com/shukrullohB/Quiz_Guess_Country/releases/download/v2.0.0/app-release.apk)
 ---
 
 ## 📱 Overview
@@ -131,7 +134,3 @@ flutter run
 - Name: Shukrullo Baxtiyorov
 - GitHub: https://github.com/shukrullohB
 
----
-## Download
-- **latest version**
-- [⬇️ Download APK](https://github.com/shukrullohB/Quiz_Guess_Country/releases/download/v2.0.0/app-release.apk)
