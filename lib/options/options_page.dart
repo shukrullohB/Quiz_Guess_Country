@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../settings/progress_repository.dart';
 import '../settings/app_settings.dart';
 import '../settings/settings_scope.dart';
+import '../theme/app_colors.dart';
 
 class OptionsPage extends StatelessWidget {
   const OptionsPage({super.key});
@@ -16,17 +17,17 @@ class OptionsPage extends StatelessWidget {
         return Scaffold(
           appBar: AppBar(
             title: const Text('Options'),
-            backgroundColor: const Color(0xFF0F172A),
+            backgroundColor: AppColors.navy900,
             foregroundColor: Colors.white,
             elevation: 0,
           ),
-          backgroundColor: const Color(0xFF0F172A),
+          backgroundColor: AppColors.navy900,
           body: Container(
             decoration: const BoxDecoration(
               gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
-                colors: [Color(0xFF0F172A), Color(0xFF111D38), Color(0xFF0B1326)],
+                colors: [AppColors.navy900, AppColors.navy700, Color(0xFF0B1326)],
               ),
             ),
             child: ListView(
@@ -36,7 +37,7 @@ class OptionsPage extends StatelessWidget {
                 const SizedBox(height: 14),
                 _SwitchTile(
                   icon: Icons.graphic_eq_rounded,
-                  accent: const Color(0xFF56E29A),
+                  accent: AppColors.greenAccent,
                   title: 'Sound effects',
                   subtitle: 'Enable sounds for actions and feedback.',
                   value: settings.soundEnabled,
@@ -45,7 +46,7 @@ class OptionsPage extends StatelessWidget {
                 const SizedBox(height: 10),
                 _SwitchTile(
                   icon: Icons.vibration_rounded,
-                  accent: const Color(0xFF47C2FF),
+                  accent: AppColors.cyanAccent,
                   title: 'Vibration',
                   subtitle: 'Use haptic feedback on mobile devices.',
                   value: settings.vibrationEnabled,
@@ -54,7 +55,7 @@ class OptionsPage extends StatelessWidget {
                 const SizedBox(height: 10),
                 _SwitchTile(
                   icon: Icons.animation_rounded,
-                  accent: const Color(0xFFFFBE4A),
+                  accent: AppColors.amberAccent,
                   title: 'Animations',
                   subtitle: 'Enable intro and interface animations.',
                   value: settings.animationsEnabled,
@@ -71,7 +72,7 @@ class OptionsPage extends StatelessWidget {
                   child: FilledButton.icon(
                     style: FilledButton.styleFrom(
                       padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 16),
-                      backgroundColor: const Color(0xFF7C2D12),
+                      backgroundColor: const Color(0xFF8A3A1A),
                       foregroundColor: const Color(0xFFFEE2E2),
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                     ),
@@ -98,7 +99,7 @@ class OptionsPage extends StatelessWidget {
         gradient: const LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: [Color(0xFF1E293B), Color(0xFF0F172A)],
+          colors: [Color(0xFF1E293B), AppColors.navy900],
         ),
         border: Border.all(color: Colors.white.withValues(alpha: 0.14)),
         boxShadow: [
@@ -123,8 +124,8 @@ class OptionsPage extends StatelessWidget {
               'Personalize your experience',
               style: TextStyle(
                 color: Colors.white,
-                fontSize: 16,
-                fontWeight: FontWeight.w700,
+                fontSize: 17,
+                fontWeight: FontWeight.w800,
               ),
             ),
           ),
@@ -211,11 +212,19 @@ class _SwitchTile extends StatelessWidget {
           ),
           title: Text(
             title,
-            style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w700),
+            style: const TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.w700,
+              fontSize: 16,
+            ),
           ),
           subtitle: Text(
             subtitle,
-            style: TextStyle(color: Colors.white.withValues(alpha: 0.70)),
+            style: TextStyle(
+              color: Colors.white.withValues(alpha: 0.72),
+              fontSize: 13.2,
+              height: 1.25,
+            ),
           ),
         ),
       ),

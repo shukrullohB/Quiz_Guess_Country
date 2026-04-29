@@ -11,8 +11,9 @@ import 'settings/settings_controller.dart';
 import 'settings/settings_repository.dart';
 import 'settings/settings_scope.dart';
 import 'the_world/world.dart';
+import 'theme/app_colors.dart';
 
-const _kRouteBackdrop = Color(0xFF0F172A);
+const _kRouteBackdrop = AppColors.navy900;
 
 class _AppSlideFadeTransitionsBuilder extends PageTransitionsBuilder {
   const _AppSlideFadeTransitionsBuilder();
@@ -75,13 +76,93 @@ class MyApp extends StatelessWidget {
             theme: ThemeData(
               brightness: Brightness.dark,
               colorScheme: ColorScheme.fromSeed(
-                seedColor: const Color(0xFF22D3EE),
+                seedColor: AppColors.cyanAccent,
                 brightness: Brightness.dark,
               ),
               useMaterial3: true,
               fontFamily: 'Roboto',
-              scaffoldBackgroundColor: const Color(0xFF0F172A),
-              canvasColor: const Color(0xFF0F172A),
+              scaffoldBackgroundColor: AppColors.navy900,
+              canvasColor: AppColors.navy900,
+              textTheme: const TextTheme(
+                headlineMedium: TextStyle(
+                  fontSize: 28,
+                  fontWeight: FontWeight.w800,
+                  letterSpacing: 0.2,
+                ),
+                titleLarge: TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.w700,
+                  letterSpacing: 0.2,
+                ),
+                titleMedium: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w700,
+                ),
+                bodyLarge: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                  height: 1.3,
+                ),
+                bodyMedium: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                  height: 1.35,
+                ),
+              ),
+              appBarTheme: const AppBarTheme(
+                backgroundColor: AppColors.navy900,
+                foregroundColor: Colors.white,
+                elevation: 0,
+                centerTitle: true,
+                titleTextStyle: TextStyle(
+                  color: Colors.white,
+                  fontSize: 24,
+                  fontWeight: FontWeight.w700,
+                  letterSpacing: 0.3,
+                  fontFamily: 'Roboto',
+                ),
+              ),
+              cardTheme: CardThemeData(
+                color: AppColors.navy800,
+                elevation: 6,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(18),
+                  side: BorderSide(color: Colors.white.withValues(alpha: 0.08)),
+                ),
+              ),
+              snackBarTheme: SnackBarThemeData(
+                backgroundColor: AppColors.navy700,
+                behavior: SnackBarBehavior.floating,
+                contentTextStyle: const TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w600,
+                ),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
+              inputDecorationTheme: InputDecorationTheme(
+                filled: true,
+                fillColor: const Color(0xFF1C2340),
+                labelStyle: TextStyle(
+                  color: Colors.white.withValues(alpha: 0.72),
+                ),
+                hintStyle: TextStyle(
+                  color: Colors.white.withValues(alpha: 0.52),
+                ),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  borderSide: BorderSide(color: Colors.white.withValues(alpha: 0.15)),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  borderSide: BorderSide(color: Colors.white.withValues(alpha: 0.15)),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  borderSide: const BorderSide(color: AppColors.cyanAccent, width: 2),
+                ),
+              ),
               pageTransitionsTheme: const PageTransitionsTheme(
                 builders: {
                   TargetPlatform.android: _AppSlideFadeTransitionsBuilder(),
@@ -183,7 +264,7 @@ class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateM
             gradient: const LinearGradient(
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
-              colors: [Color(0xFF131B33), Color(0xFF0D1428)],
+              colors: [Color(0xFF131B33), AppColors.navy900],
             ),
             border: Border.all(color: Colors.white.withValues(alpha: 0.16)),
             boxShadow: [
@@ -204,9 +285,9 @@ class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateM
                   height: 54,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: const Color(0xFFFF6A55).withValues(alpha: 0.18),
+                    color: AppColors.coralAccent.withValues(alpha: 0.18),
                     border: Border.all(
-                      color: const Color(0xFFFF6A55).withValues(alpha: 0.45),
+                      color: AppColors.coralAccent.withValues(alpha: 0.45),
                     ),
                   ),
                   child: const Icon(Icons.logout_rounded, color: Color(0xFFFF9A8A), size: 28),
@@ -253,7 +334,7 @@ class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateM
                     Expanded(
                       child: FilledButton(
                         style: FilledButton.styleFrom(
-                          backgroundColor: const Color(0xFFFF6A55),
+                          backgroundColor: AppColors.coralAccent,
                           foregroundColor: Colors.white,
                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
                           padding: const EdgeInsets.symmetric(vertical: 13),
@@ -329,7 +410,7 @@ class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateM
                             borderRadius: BorderRadius.circular(22),
                             boxShadow: [
                               BoxShadow(
-                                color: const Color(0xFF22D3EE).withValues(alpha: 0.35),
+                                color: AppColors.cyanAccent.withValues(alpha: 0.35),
                                 blurRadius: 18,
                                 spreadRadius: 1,
                               ),
@@ -344,10 +425,10 @@ class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateM
                         const Text(
                           'World Explorer',
                           style: TextStyle(
-                            fontSize: 30,
-                            fontWeight: FontWeight.w700,
+                            fontSize: 32,
+                            fontWeight: FontWeight.w800,
                             color: Colors.white,
-                            letterSpacing: 1,
+                            letterSpacing: 0.7,
                           ),
                         ),
                         const SizedBox(height: 28),

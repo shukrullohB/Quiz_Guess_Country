@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:confetti/confetti.dart';
 import '../settings/progress_repository.dart';
 import '../level_page/levels.dart';
+import '../theme/app_colors.dart';
 
 class Level30QuestionPage extends StatefulWidget {
   const Level30QuestionPage({super.key});
@@ -54,15 +55,24 @@ class _Level30QuestionPageState extends State<Level30QuestionPage>
       context: context,
       barrierDismissible: false,
       builder: (_) => AlertDialog(
-        backgroundColor: const Color(0xFF10182D),
+        backgroundColor: AppColors.navy800,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         title: const Text(
           'Congratulations!',
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700),
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.w800,
+            fontSize: 24,
+          ),
         ),
         content: const Text(
           'You guessed all the countries. Great job!',
-          style: TextStyle(color: Colors.white70),
+          style: TextStyle(
+            color: Colors.white70,
+            fontSize: 15,
+            height: 1.3,
+            fontWeight: FontWeight.w500,
+          ),
         ),
         actions: [
           TextButton(
@@ -70,7 +80,7 @@ class _Level30QuestionPageState extends State<Level30QuestionPage>
             child: const Text(
               'OK',
               style: TextStyle(
-                color: Color(0xFF10E17A),
+                color: AppColors.greenAccent,
                 fontWeight: FontWeight.w700,
               ),
             ),
@@ -102,9 +112,9 @@ class _Level30QuestionPageState extends State<Level30QuestionPage>
 
   @override
   Widget build(BuildContext context) {
-    const green = Color(0xFF10E17A);
-    const dark1 = Color(0xFF1C2340);
-    const dark2 = Color(0xFF10182D);
+    const green = AppColors.greenAccent;
+    const dark1 = AppColors.navy600;
+    const dark2 = AppColors.navy800;
 
     final textColor = isCorrect
         ? Colors.green
@@ -290,7 +300,6 @@ class _Level30QuestionPageState extends State<Level30QuestionPage>
           ),
         ],
       ),
-      floatingActionButton: checkedCorrect ? null : null,
       bottomNavigationBar: checkedCorrect
           ? Container(
               color: dark2,
@@ -301,7 +310,7 @@ class _Level30QuestionPageState extends State<Level30QuestionPage>
                     height: 56,
                     child: ElevatedButton.icon(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF10E17A),
+                        backgroundColor: AppColors.greenAccent,
                         foregroundColor: Colors.black,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(18),
@@ -313,7 +322,7 @@ class _Level30QuestionPageState extends State<Level30QuestionPage>
                         'Choose another level',
                         style: TextStyle(
                           fontWeight: FontWeight.w800,
-                          fontSize: 16,
+                          fontSize: 17,
                         ),
                       ),
                       onPressed: () {
@@ -333,3 +342,5 @@ class _Level30QuestionPageState extends State<Level30QuestionPage>
     );
   }
 }
+
+

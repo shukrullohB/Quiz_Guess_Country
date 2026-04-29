@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
+import '../theme/app_colors.dart';
 
 class World extends StatefulWidget {
   const World({super.key});
@@ -97,10 +98,10 @@ class _WorldState extends State<World> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF0F172A),
+      backgroundColor: AppColors.navy900,
       appBar: AppBar(
         title: const Text('The World'),
-        backgroundColor: const Color(0xFF0F172A),
+        backgroundColor: AppColors.navy900,
         foregroundColor: Colors.white,
       ),
       body: LayoutBuilder(
@@ -139,7 +140,7 @@ class _WorldState extends State<World> {
                       'images/world_bg.jpg',
                       fit: BoxFit.cover,
                       errorBuilder: (context, error, stackTrace) {
-                        return Container(color: const Color(0xFF0F172A));
+                        return Container(color: AppColors.navy900);
                       },
                     ),
                   ),
@@ -224,7 +225,7 @@ class _WorldState extends State<World> {
                                   overflow: TextOverflow.ellipsis,
                                   style: const TextStyle(
                                     color: Colors.white,
-                                    fontSize: 10.8,
+                                    fontSize: 11.6,
                                     fontWeight: FontWeight.w700,
                                     shadows: [
                                       Shadow(
@@ -273,82 +274,85 @@ class _WorldState extends State<World> {
   void _showNodeDetails(_WorldNode node) {
     showModalBottomSheet(
       context: context,
-      backgroundColor: const Color(0xFF0F172A),
+      backgroundColor: AppColors.navy900,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
       builder: (context) {
-        return Padding(
-          padding: const EdgeInsets.fromLTRB(20, 16, 20, 24),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  Expanded(
-                    child: Text(
-                      node.title,
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
-                        fontWeight: FontWeight.w700,
+        return SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(20, 16, 20, 24),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        node.title,
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 22,
+                          fontWeight: FontWeight.w800,
+                        ),
                       ),
                     ),
-                  ),
-                  Text(
-                    '#${node.id}',
-                    style: TextStyle(
-                      color: Colors.white.withValues(alpha: 0.72),
-                      fontSize: 14,
+                    Text(
+                      '#${node.id}',
+                      style: TextStyle(
+                        color: Colors.white.withValues(alpha: 0.72),
+                        fontSize: 13,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
+                  ],
+                ),
+                const SizedBox(height: 12),
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(16),
+                  child: Image.asset(
+                    node.imageAsset,
+                    height: 190,
+                    width: double.infinity,
+                    fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) {
+                      return Container(
+                        height: 190,
+                        width: double.infinity,
+                        color: Colors.white.withValues(alpha: 0.08),
+                        alignment: Alignment.center,
+                        child: const Icon(
+                          Icons.image_not_supported,
+                          color: Colors.white70,
+                          size: 36,
+                        ),
+                      );
+                    },
                   ),
-                ],
-              ),
-              const SizedBox(height: 12),
-              ClipRRect(
-                borderRadius: BorderRadius.circular(16),
-                child: Image.asset(
-                  node.imageAsset,
-                  height: 190,
+                ),
+                const SizedBox(height: 12),
+                SizedBox(
                   width: double.infinity,
-                  fit: BoxFit.cover,
-                  errorBuilder: (context, error, stackTrace) {
-                    return Container(
-                      height: 190,
-                      width: double.infinity,
-                      color: Colors.white.withValues(alpha: 0.08),
-                      alignment: Alignment.center,
-                      child: const Icon(
-                        Icons.image_not_supported,
-                        color: Colors.white70,
-                        size: 36,
+                  child: FilledButton.icon(
+                    style: FilledButton.styleFrom(
+                      backgroundColor: AppColors.amberAccent,
+                      foregroundColor: AppColors.navy900,
+                      padding: const EdgeInsets.symmetric(vertical: 12),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
                       ),
-                    );
-                  },
-                ),
-              ),
-              const SizedBox(height: 12),
-              SizedBox(
-                width: double.infinity,
-                child: FilledButton.icon(
-                  style: FilledButton.styleFrom(
-                    backgroundColor: const Color(0xFFF59E0B),
-                    foregroundColor: const Color(0xFF0F172A),
-                    padding: const EdgeInsets.symmetric(vertical: 12),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    onPressed: () => _openLocation(node),
+                    icon: const Icon(Icons.location_on),
+                    label: const Text(
+                      'Open Location',
+                      style: TextStyle(fontWeight: FontWeight.w700),
                     ),
                   ),
-                  onPressed: () => _openLocation(node),
-                  icon: const Icon(Icons.location_on),
-                  label: const Text(
-                    'Open Location',
-                    style: TextStyle(fontWeight: FontWeight.w700),
-                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         );
       },
@@ -466,7 +470,7 @@ class _WorldNodeWidget extends StatelessWidget {
               height: 34,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: const Color(0xFF0F172A).withValues(alpha: 0.2),
+                color: AppColors.navy900.withValues(alpha: 0.2),
                 border: Border.all(
                   color: Colors.white.withValues(alpha: 0.7),
                   width: 1,
@@ -476,7 +480,7 @@ class _WorldNodeWidget extends StatelessWidget {
               child: Text(
                 '${node.id}',
                 style: const TextStyle(
-                  color: Color(0xFF0F172A),
+                  color: AppColors.navy900,
                   fontSize: 15,
                   fontWeight: FontWeight.w800,
                 ),

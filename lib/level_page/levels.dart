@@ -33,6 +33,7 @@ import '../all_levels/level7.dart';
 import '../all_levels/level8.dart';
 import '../all_levels/level9.dart';
 import '../settings/progress_repository.dart';
+import '../theme/app_colors.dart';
 
 final List<Widget> levelPages = [
   const Level1QuestionPage(),
@@ -142,7 +143,7 @@ class _LevelSelectPageState extends State<LevelSelectPage> {
       context: context,
       builder: (ctx) {
         return AlertDialog(
-          backgroundColor: const Color(0xFF10182D),
+          backgroundColor: AppColors.navy800,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
           title: Row(
             children: [
@@ -178,8 +179,8 @@ class _LevelSelectPageState extends State<LevelSelectPage> {
             ),
             FilledButton.icon(
               style: FilledButton.styleFrom(
-                backgroundColor: const Color(0xFF10E17A),
-                foregroundColor: const Color(0xFF10182D),
+                backgroundColor: AppColors.greenAccent,
+                foregroundColor: AppColors.navy800,
               ),
               onPressed: () => Navigator.of(ctx).pop(true),
               icon: const Icon(Icons.restart_alt),
@@ -216,7 +217,7 @@ class _LevelSelectPageState extends State<LevelSelectPage> {
     final allCompleted = _isAllCompleted(completedCount);
 
     return Scaffold(
-      backgroundColor: const Color(0xFF0F172A),
+      backgroundColor: AppColors.navy900,
       body: Stack(
         children: [
           Positioned.fill(
@@ -254,10 +255,10 @@ class _LevelSelectPageState extends State<LevelSelectPage> {
                   title: Text(
                     'Select Level',
                     style: TextStyle(
-                      fontSize: 32,
-                      fontWeight: FontWeight.bold,
+                      fontSize: 28,
+                      fontWeight: FontWeight.w800,
                       color: Colors.white.withValues(alpha: 0.9),
-                      letterSpacing: 2,
+                      letterSpacing: 0.9,
                       shadows: [
                         Shadow(
                           blurRadius: 8,
@@ -317,12 +318,12 @@ class _LevelSelectPageState extends State<LevelSelectPage> {
                                     decoration: BoxDecoration(
                                       color: allCompleted
                                           ? const Color(0xFFF59E0B).withValues(alpha: 0.24)
-                                          : const Color(0xFF10E17A).withValues(alpha: 0.2),
+                                          : AppColors.greenAccent.withValues(alpha: 0.2),
                                       borderRadius: BorderRadius.circular(12),
                                       border: Border.all(
                                         color: allCompleted
                                             ? const Color(0xFFFDE68A).withValues(alpha: 0.50)
-                                            : const Color(0xFF10E17A).withValues(alpha: 0.45),
+                                            : AppColors.greenAccent.withValues(alpha: 0.45),
                                       ),
                                     ),
                                     child: Text(

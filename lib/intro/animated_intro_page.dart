@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../theme/app_colors.dart';
 
 class AnimatedIntroPage extends StatefulWidget {
   const AnimatedIntroPage({
@@ -98,7 +99,7 @@ class _AnimatedIntroPageState extends State<AnimatedIntroPage>
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
-            colors: [Color(0xFF081226), Color(0xFF112647), Color(0xFF0F172A)],
+            colors: [Color(0xFF081226), Color(0xFF112647), AppColors.navy900],
           ),
         ),
         child: Center(
@@ -123,7 +124,7 @@ class _AnimatedIntroPageState extends State<AnimatedIntroPage>
                     borderRadius: BorderRadius.circular(30),
                     boxShadow: [
                       BoxShadow(
-                        color: const Color(0xFF22D3EE).withValues(alpha: 0.24),
+                        color: AppColors.cyanAccent.withValues(alpha: 0.24),
                         blurRadius: 30,
                         spreadRadius: 4,
                       ),

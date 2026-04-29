@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:confetti/confetti.dart';
 import '../settings/progress_repository.dart';
+import '../theme/app_colors.dart';
 import 'level9.dart';
 
 class Level8QuestionPage extends StatefulWidget {
@@ -69,9 +70,9 @@ class _Level8QuestionPageState extends State<Level8QuestionPage>
 
   @override
   Widget build(BuildContext context) {
-    const green = Color(0xFF10E17A);
-    const dark1 = Color(0xFF1C2340);
-    const dark2 = Color(0xFF10182D);
+    const green = AppColors.greenAccent;
+    const dark1 = AppColors.navy600;
+    const dark2 = AppColors.navy800;
 
     final textColor = isCorrect
         ? Colors.green
@@ -272,3 +273,6 @@ class _Level8QuestionPageState extends State<Level8QuestionPage>
     );
   }
 }
+
+
+
