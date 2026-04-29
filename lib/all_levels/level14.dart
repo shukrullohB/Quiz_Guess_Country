@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:confetti/confetti.dart';
 import '../settings/progress_repository.dart';
 import '../theme/app_colors.dart';
+import 'image_preview.dart';
 import 'level15.dart';
 
 class Level14QuestionPage extends StatefulWidget {
   const Level14QuestionPage({super.key});
-
   @override
   State<Level14QuestionPage> createState() => _Level14QuestionPageState();
 }
@@ -39,8 +39,7 @@ class _Level14QuestionPageState extends State<Level14QuestionPage>
   bool checkedCorrect = false;
   bool hasChecked = false;
 
-  bool get isCorrect => userInput.toUpperCase() == answer;
-
+  bool get isCorrect => userInput.trim().toUpperCase() == answer;
   @override
   void dispose() {
     _controller.dispose();
@@ -50,6 +49,7 @@ class _Level14QuestionPageState extends State<Level14QuestionPage>
   }
 
   void _onCheck() {
+    FocusScope.of(context).unfocus();
     setState(() {
       userInput = _controller.text;
       hasChecked = true;
@@ -67,7 +67,6 @@ class _Level14QuestionPageState extends State<Level14QuestionPage>
         ..forward();
     }
   }
-
   @override
   Widget build(BuildContext context) {
     const green = AppColors.greenAccent;
@@ -136,9 +135,15 @@ class _Level14QuestionPageState extends State<Level14QuestionPage>
                           itemBuilder: (context, index) {
                             return ClipRRect(
                               borderRadius: BorderRadius.circular(14),
-                              child: Image.asset(
-                                imagePaths[index],
-                                fit: BoxFit.cover,
+                              child: Material(
+                                color: Colors.transparent,
+                                child: InkWell(
+                                  onTap: () => showLevelImagePreview(context, imagePaths[index]),
+                                  child: Image.asset(
+                                    imagePaths[index],
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
                               ),
                             );
                           },
@@ -167,6 +172,7 @@ class _Level14QuestionPageState extends State<Level14QuestionPage>
                           controller: _controller,
                           style: const TextStyle(color: Colors.white),
                           cursorColor: green,
+                          textInputAction: TextInputAction.done,
                           textCapitalization: TextCapitalization.characters,
                           decoration: InputDecoration(
                             filled: true,
@@ -199,6 +205,7 @@ class _Level14QuestionPageState extends State<Level14QuestionPage>
                               color: Colors.white.withValues(alpha: 0.5),
                             ),
                           ),
+                          onSubmitted: (_) => _onCheck(),
                           onChanged: (value) {
                             setState(() {
                               userInput = value;

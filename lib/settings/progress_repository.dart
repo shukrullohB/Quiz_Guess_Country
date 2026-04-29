@@ -17,14 +17,16 @@ class ProgressRepository {
 
   Future<void> markCompleted(int level) async {
     final prefs = await SharedPreferences.getInstance();
-    final completed = await loadCompletedLevels();
+    final raw = prefs.getStringList(completedLevelsKey) ?? const <String>[];
+    final completed = raw.map(int.tryParse).whereType<int>().toSet();
     completed.add(level);
     final highest = completed.isEmpty
         ? 0
         : completed.reduce((a, b) => a > b ? a : b);
+    final sortedCompleted = completed.toList()..sort();
     await prefs.setStringList(
       completedLevelsKey,
-      completed.map((e) => e.toString()).toList()..sort(),
+      sortedCompleted.map((e) => e.toString()).toList(),
     );
     await prefs.setInt(highestCompletedLevelKey, highest);
   }
