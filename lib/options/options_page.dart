@@ -194,36 +194,39 @@ class _SwitchTile extends StatelessWidget {
       ),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-        child: SwitchListTile(
-          activeThumbColor: Colors.white,
-          activeTrackColor: accent,
-          inactiveThumbColor: Colors.grey.shade300,
-          inactiveTrackColor: Colors.white24,
-          value: value,
-          onChanged: onChanged,
-          secondary: Container(
-            width: 34,
-            height: 34,
-            decoration: BoxDecoration(
-              color: accent.withValues(alpha: 0.18),
-              borderRadius: BorderRadius.circular(10),
+        child: Material(
+          type: MaterialType.transparency,
+          child: SwitchListTile(
+            activeThumbColor: Colors.white,
+            activeTrackColor: accent,
+            inactiveThumbColor: Colors.grey.shade300,
+            inactiveTrackColor: Colors.white24,
+            value: value,
+            onChanged: onChanged,
+            secondary: Container(
+              width: 34,
+              height: 34,
+              decoration: BoxDecoration(
+                color: accent.withValues(alpha: 0.18),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Icon(icon, color: accent),
             ),
-            child: Icon(icon, color: accent),
-          ),
-          title: Text(
-            title,
-            style: const TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.w700,
-              fontSize: 16,
+            title: Text(
+              title,
+              style: const TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.w700,
+                fontSize: 16,
+              ),
             ),
-          ),
-          subtitle: Text(
-            subtitle,
-            style: TextStyle(
-              color: Colors.white.withValues(alpha: 0.72),
-              fontSize: 13.2,
-              height: 1.25,
+            subtitle: Text(
+              subtitle,
+              style: TextStyle(
+                color: Colors.white.withValues(alpha: 0.72),
+                fontSize: 13.2,
+                height: 1.25,
+              ),
             ),
           ),
         ),
