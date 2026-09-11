@@ -1,10 +1,10 @@
-# 🌍 World Explorer
+# World Explorer
 
 **World Explorer** is a Flutter application that helps users learn world geography. The app combines a country guessing quiz with an interactive map where users can discover interesting places around the world.
 
 ---
 
-## 📥 Download
+## Download
 
 Download the latest APK:
 
@@ -12,7 +12,7 @@ Download the latest APK:
 
 ---
 
-## 📱 Screenshots
+## Screenshots
 
 <img width="1200" height="624" alt="quiz-app-img" src="https://github.com/user-attachments/assets/85644877-a63c-4d15-a998-a11022032b40" />
 
@@ -20,7 +20,7 @@ Download the latest APK:
 
 ## Features
 
-### 🎮 Quiz Mode
+### Quiz Mode
 
 - 30 country levels
 - Levels unlock one by one
@@ -29,7 +29,7 @@ Download the latest APK:
 - Progress is saved automatically
 - Replay after completing all levels
 
-### 🌎 World Map
+### World Map
 
 - Interactive map with places to explore
 - Tap locations to view information
