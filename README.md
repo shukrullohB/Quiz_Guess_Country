@@ -36,7 +36,7 @@ Download the latest APK:
 - Images for each place
 - Open locations in Google Maps
 
-### ⚙️ Settings
+### Settings
 
 - Enable or disable sound
 - Toggle vibration
